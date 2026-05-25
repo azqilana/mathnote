@@ -28,10 +28,10 @@ jobs:
     - name: Build APK Clean
       run: |
         cd build-android
-        cordova build android --release
+        cordova build android
 
     - name: Upload APK Result
       uses: actions/upload-artifact@v4
       with:
         name: MatchNote-Clean-APK
-        path: build-android/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
+        path: build-android/platforms/android/app/build/outputs/apk/debug/app-debug.apk
