@@ -128,8 +128,10 @@ btnOpsiC.addEventListener('click', () => sisipkanHasil('C'));
 function tampilkanDaftar() {
   wadahList.innerHTML = ''; 
   if (daftarData.length === 0) {
-    wadahList.innerHTML = '<p style="text-align:center; font-style:italic; color:#666;">Belum ada catatan yang disimpan.</p>';
+    // Ganti baris di dalam tampilkanDaftar() script.js Anda:
+      wadahList.innerHTML = '<p style="text-align:center; font-style:italic; color:var(--warna-teks-mading);">Belum ada catatan yang disimpan.</p>';
     keluarModeHapus();
+    btnMasterHapus.style.display = 'none'
     return;
   }
 
@@ -145,6 +147,7 @@ function tampilkanDaftar() {
       <div class="item-isi">${item.isi}</div>
     `;
     wadahList.appendChild(itemDiv);
+    btnMasterHapus.style.display = 'block'
   });
 }
 
@@ -203,14 +206,16 @@ btnMasterHapus.addEventListener('click', function() {
 
 btnBatalHapus.addEventListener('click', keluarModeHapus);
 
-// Tombol Plus (Munculkan Area Menulis)
+// Tombol Plus (Munculkan Area Menulis) - Dibikin Lebih Responsif & Auto Focus
 btnMunculkan.addEventListener('click', function(e) {
   e.preventDefault();
   if (sectionCatatan.style.display === 'none' || sectionCatatan.style.display === '') {
     sectionCatatan.style.display = 'block';
     sectionCatatan.scrollIntoView({ behavior: 'smooth' });
+    sectionDaftar.style.display = 'none'
     setTimeout(() => { inputJudul.focus(); }, 300);
   } else {
+    sectionDaftar.style.display = 'block'
     sectionCatatan.style.display = 'none';
     tooltip.style.display = 'none';
   }
@@ -219,24 +224,22 @@ btnMunculkan.addEventListener('click', function(e) {
 
 // Tombol Tutup Silang (X) - Menggulung balik ke Header Atas
 btnTutupCatatan.addEventListener('click', function() {
+  sectionDaftar.style.display = 'block'
   sectionCatatan.style.display = 'none';
   tooltip.style.display = 'none';
   document.getElementById('top-header').scrollIntoView({ behavior: 'smooth' });
 });
 
-// Proses Penyimpanan Form Catatan
-// 🔥 PERBAIKAN: Proses Penyimpanan Form Catatan (Judul boleh kosong, Isi WAJIB ada)
+// 🔥 PROSES PENYIMPANAN FORM (Isi Catatan wajib ada, judul boleh kosong)
 formCatatan.addEventListener('submit', function(event) {
   event.preventDefault(); 
   
-  // 1. Cek apakah isi catatan kosong atau hanya berisi spasi
+  // PROTEKSI KOSONG: Cek jika teks isi kosong atau cuma spasi
   if (isiCatatan.value.trim() === '') {
-    // Jika kosong, arahkan kursor kembali ke tempat menulis isi catatan
-    isiCatatan.focus();
-    return alert("Tidak ada isi catatan")
+    isiCatatan.focus(); // Kembalikan fokus kursor ke tempat isi
+    return; // Stop alur di sini agar tidak tersimpan ke localStorage
   }
   
-  // 2. Jika lolos pengecekan (ada isinya), lakukan proses simpan seperti biasa
   const catatanBaru = { 
     judul: inputJudul.value, 
     isi: isiCatatan.value 
@@ -247,12 +250,10 @@ formCatatan.addEventListener('submit', function(event) {
   keluarModeHapus();
   tampilkanDaftar();
   
-  // 3. Reset form ketikan
   inputJudul.value = '';
   isiCatatan.value = '';
   tooltip.style.display = 'none';
   
-  // 4. Munculkan notifikasi sukses
   notif.classList.add('muncul');
   setTimeout(() => { notif.classList.remove('muncul'); }, 600);
 });

@@ -1,15 +1,21 @@
 /* --- CSS VARIABLES TEMA --- */
 :root {
-  --warna-utama: #4a2c11;         
-  --warna-muda: #a67c52;          
-  --warna-transparan: rgba(245, 222, 179, 0.5); 
-  --warna-kertas: #ffffff;        
-  --warna-garis-merah: #ff4d4d;   
-  --warna-garis-biru: #a6c8ff;    
-  --warna-teks-tombol: #555555;   
-  --warna-teks-gelap: #2e1a08;    
-  --warna-merah-hapus: #d32f2f;
+  --warna-utama: #4a2c11;           
+  --warna-muda: #a67c52;            
+  --warna-transparan: rgba(245, 222, 179, 0.5);   
+  --warna-kertas: #ffffff;          
+  --warna-garis-merah: #ff4d4d;     
+  --warna-garis-biru: #a6c8ff;      
+  --warna-teks-tombol: #555555;     
+  --warna-teks-gelap: #2e1a08;      
+  --warna-merah-hapus: #d32f2f;  
   --warna-tooltip-bg: #333333;
+  --warna-biru-batal: #0000ff;        
+  --warna-teks-mading: #666666;       
+  --warna-bayangan: rgba(0, 0, 0, 0.3);
+  --warna-bayangan-soft: rgba(0, 0, 0, 0.2);
+  --warna-bayangan-notif: rgba(0, 0, 0, 0.4);
+  --warna-overlay-judul: rgba(74, 44, 17, 0.1);
 }
 
 /* Reset Global & Meratakan Semua ke Tengah */
@@ -17,8 +23,8 @@
   margin: 0;
   padding: 0;
   text-align: center;
-}
-      
+}      
+
 body {
   background: linear-gradient(to bottom, var(--warna-utama), var(--warna-muda));
   min-height: 100vh;
@@ -28,7 +34,7 @@ body {
 
 header {
   padding: 20px 0;
-  color: white;
+  color: var(--warna-kertas);
 }
 
 .kotak-tema {
@@ -43,22 +49,23 @@ header {
 
 .btn-tambah {
   position: absolute;
-  top: 6px;    
-  right: 10px;   
+  top: 6px;      
+  right: 10px;     
   width: 40px;
   height: 40px;
   border-radius: 50%;
   background-color: var(--warna-utama);
-  color: white;
+  color: var(--warna-kertas);
   font-size: 20px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 6px var(--warna-bayangan);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index:1;
+  z-index: 1;
 }
+
 .btn-tambah:active {
   transform: scale(0.9);
   background-color: var(--warna-muda);
@@ -70,7 +77,7 @@ header {
   margin: 20px auto;
   background: var(--warna-kertas);
   border-radius: 4px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px var(--warna-bayangan-soft);
   position: relative;
   box-sizing: border-box;
   padding: 0;
@@ -134,15 +141,17 @@ header {
   outline: none;
   line-height: 1;
 }
+
 .btn-tutup:hover {
   color: var(--warna-garis-merah); 
 }
 
 @keyframes kedipBorder {
-  0% { box-shadow: 0 4px 6px rgba(0,0,0,0.3), 0 0 0 0px rgba(74, 44, 17, 0.7); }
-  50% { box-shadow: 0 4px 6px rgba(0,0,0,0.3), 0 0 0 10px rgba(74, 44, 17, 0); }
-  100% { box-shadow: 0 4px 6px rgba(0,0,0,0.3), 0 0 0 0px rgba(74, 44, 17, 0); }
+  0% { box-shadow: 0 4px 6px var(--warna-bayangan), 0 0 0 0px rgba(74, 44, 17, 0.7); }
+  50% { box-shadow: 0 4px 6px var(--warna-bayangan), 0 0 0 10px rgba(74, 44, 17, 0); }
+  100% { box-shadow: 0 4px 6px var(--warna-bayangan), 0 0 0 0px rgba(74, 44, 17, 0); }
 }
+
 .tombol-kedip {
   animation: kedipBorder 0.8s ease-in-out 4;
 }
@@ -172,21 +181,22 @@ header {
   position: absolute;
   display: none; 
   background-color: var(--warna-tooltip-bg);
-  color: #ffffff;
+  color: var(--warna-kertas);
   padding: 6px 10px;
   border-radius: 8px;
   font-size: 13px;
   font-weight: bold;
   z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px var(--warna-bayangan);
   flex-direction: row;
   align-items: center;
   gap: 6px;
   pointer-events: auto;
 }
+
 .tooltip-hitung button {
   background-color: var(--warna-utama);
-  color: white;
+  color: var(--warna-kertas);
   border: none;
   padding: 3px 8px;
   border-radius: 4px;
@@ -194,6 +204,7 @@ header {
   font-weight: bold;
   cursor: pointer;
 }
+
 .tooltip-hitung button:hover {
   background-color: var(--warna-muda);
 }
@@ -204,22 +215,25 @@ header {
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--warna-utama);
-  color: white;
+  color: var(--warna-kertas);
   padding: 10px 20px;
   border-radius: 30px;
   font-weight: bold;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 10px var(--warna-bayangan-notif);
   z-index: 2000;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease-in-out;
 }
+
 .notif-sukses.muncul {
   opacity: 1;
 }
 
 .daftar-catatan {
+  height: 60vh;
   padding: 20px 15px;
+  border-radius: 6px;
   text-align: center;
   position: relative;
 }
@@ -233,33 +247,34 @@ header {
   padding-bottom: 5px;
   position: relative;
 }
+
 .daftar-catatan h3 {
   color: var(--warna-utama);
   text-align: center;
 }
 
+/* 🔄 TOMBOL BATAL HAPUS (Sudah diperbaiki, diletakkan normal berdampingan) */
 .btn-batal-hapus {
-  position:absolute;
-  bottom:20px;
-  left:13px;
-  display: none;
-  background: blue;
-  color: var(--teks-tombol);
-  border-radius:5px;
+  display: none; /* Hanya muncul lewat mode-hapus */
+  background-color: var(--warna-biru-batal);
+  color: var(--warna-kertas);
+  border-radius: 5px;
   border: none;
   font-weight: bold;
   font-size: 15px;
   cursor: pointer;
-  padding: 6px 25px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  padding: 8px 15px; /* Sama persis ukurannya dengan tombol hapus semua */
+  box-shadow: 0 4px 6px var(--warna-bayangan-soft);
+  transition: all 0.3s ease;
   outline: none;
 }
+
 .daftar-catatan.mode-hapus .btn-batal-hapus {
   display: block;
 }
 
 .item-catatan {
-  background: rgba(255, 255, 255, 0.4);
+  background: var(--warna-transparan);
   margin-bottom: 10px;
   border-radius: 10px;
   border: 1px solid var(--warna-utama);
@@ -275,23 +290,26 @@ header {
   padding: 12px 15px;
   font-weight: bold;
   cursor: pointer;
-  background: rgba(74, 44, 17, 0.1);
+  background: var(--warna-overlay-judul);
   display: flex;
   justify-content: space-between;
   align-items: center;
   text-align: left;
   user-select: none;
 }
+
 .item-judul .teks-judul {
   flex-grow: 1;
   text-align: left;
 }
+
 .item-judul::after {
   content: '▼';
   font-size: 12px;
   transition: transform 0.3s;
   margin-left: 10px;
 }
+
 .item-catatan.aktif .item-judul::after {
   transform: rotate(180deg);
 }
@@ -303,7 +321,7 @@ header {
 .btn-hapus-satuan {
   display: none;
   background-color: var(--warna-merah-hapus);
-  color: white;
+  color: var(--warna-kertas);
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
@@ -313,6 +331,7 @@ header {
   margin-left: 10px;
   z-index: 10;
 }
+
 .daftar-catatan.mode-hapus .btn-hapus-satuan {
   display: block; 
 }
@@ -321,22 +340,26 @@ header {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--warna-transparan);
   text-align: left;
   white-space: pre-wrap; 
 }
+
 .item-catatan.aktif .item-isi {
   max-height: 1000px; 
   padding: 15px;
   border-top: 1px dashed var(--warna-utama);
 }
 
+/* Area bawah pembungkus tombol manajemen hapus */
 .footer-daftar {
   margin-top: 15px;
   display: flex;
   justify-content: flex-end;
+  gap: 10px; /* Memberikan celah renggang yang ideal antar kedua tombol */
 }
 
+/* Tombol Pemicu Hapus (Keadaan Normal) */
 .btn-pemicu-hapus {
   background: transparent;
   color: var(--warna-utama);
@@ -348,9 +371,16 @@ header {
   border-radius: 5px;
   transition: all 0.3s ease;
 }
+
+/* Tombol Hapus Semua (Saat Aktif Masuk Mode Hapus) */
 .btn-pemicu-hapus.aktif-merah {
   background-color: var(--warna-merah-hapus);
-  color: white;
+  color: var(--warna-kertas);
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
   padding: 8px 15px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 6px var(--warna-bayangan-soft);
 }
