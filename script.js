@@ -35,26 +35,22 @@ class Hitung {
     return ekspresi;
   }
 
-  // ✨ PERBAIKAN LOGIKA: Memproses kalkulasi angka berurutan global (Koma & Blok Titik Dua)
+  // ✨ PERBAIKAN LOGIKA: Mendukung spasi bebas di sekitar tanda titik dua ( : )
   prosesAngkaBerurutan(teksHinggaKursor) {
-    // 1. Ambil baris terakhir tempat kursor berada untuk mendeteksi simbol operasi akhir (+=, -=, ×=, ÷=)
     const barisBaris = teksHinggaKursor.split('\n');
     const barisTerakhir = barisBaris[barisBaris.length - 1].trim();
 
     const regexOperasiAkhir = /^([\+\-\×\÷]=)\s*$/;
     const cocokOperasi = barisTerakhir.match(regexOperasiAkhir);
     
-    // Jika baris paling bawah tempat mengetik bukan/belum diakhiri +=, -=, ×=, atau ÷=, abaikan
     if (!cocokOperasi) return null; 
     
     const operasi = cocokOperasi[1]; 
     let arrayAngka = [];
 
-    // 2. JIKA FORMAT TITIK DUA (Nama:Angka)
-    // Kita cek seluruh teks dari baris-baris sebelumnya, apakah mengandung tanda titik dua
     if (teksHinggaKursor.includes(':')) {
-      // Regex global mencari kata diikuti titik dua lalu angka murni
-      const regexTitikDua = /[^:\s\n]+:\s*(\d+(?:\.\d+)?)/g;
+      // 🛠️ REGEX BARU: [^:\s\n]+ mencari nama kata, \s*:\s* mengizinkan spasi sebelum & sesudah titik dua
+      const regexTitikDua = /[^:\s\n]+\s*:\s*(\d+(?:\.\d+)?)/g;
       let cocokItem;
       
       while ((cocokItem = regexTitikDua.exec(teksHinggaKursor)) !== null) {
@@ -64,9 +60,7 @@ class Hitung {
         }
       }
     } 
-    // 3. JIKA FORMAT KOMA STANDARD (1,4,5,6)
     else {
-      // Ambil baris tepat di atasnya atau baris yang sama sebelum tanda operasi
       let kontenAngka = barisBaris.length > 1 ? barisBaris[barisBaris.length - 2] : barisTerakhir.replace(regexOperasiAkhir, '');
       if (kontenAngka.includes(',')) {
         arrayAngka = kontenAngka
@@ -78,7 +72,7 @@ class Hitung {
 
     if (arrayAngka.length === 0) return null;
 
-    // 4. KALKULASI REDUCE WITH ACCUMULATOR
+    // KALKULASI REDUCE WITH ACCUMULATOR
     const hasilKalkulasi = arrayAngka.reduce((akumulator, nilaiSekarang, indeks) => {
       if (indeks === 0) return nilaiSekarang;
 
@@ -100,13 +94,11 @@ class Hitung {
   prosesTeks(teksLengkap, posisiKursor) {
     const teksHinggaKursor = teksLengkap.substring(0, posisiKursor);
     
-    // 1. Coba jalankan kalkulator Array Reduce (Format Koma & Titik dua multi-line)
     const hasilBerurutan = this.prosesAngkaBerurutan(teksHinggaKursor);
     if (hasilBerurutan !== null) {
       return hasilBerurutan;
     }
 
-    // 2. Jalankan kalkulator matematika standar bawaan sebelumnya (Single line)
     const barisBaris = teksHinggaKursor.split('\n');
     let barisTerakhir = barisBaris[barisBaris.length - 1].trim();
 
