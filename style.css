@@ -49,14 +49,14 @@ header {
 
 .btn-tambah {
   position: absolute;
-  top: 6px;      
-  right: 10px;     
+  top: 4px;      
+  right: 5px;     
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 10%;
   background-color: var(--warna-utama);
   color: var(--warna-kertas);
-  font-size: 20px;
+  font-size: 50px;
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 6px var(--warna-bayangan);
@@ -146,16 +146,6 @@ header {
   color: var(--warna-garis-merah); 
 }
 
-@keyframes kedipBorder {
-  0% { box-shadow: 0 4px 6px var(--warna-bayangan), 0 0 0 0px rgba(74, 44, 17, 0.7); }
-  50% { box-shadow: 0 4px 6px var(--warna-bayangan), 0 0 0 10px rgba(74, 44, 17, 0); }
-  100% { box-shadow: 0 4px 6px var(--warna-bayangan), 0 0 0 0px rgba(74, 44, 17, 0); }
-}
-
-.tombol-kedip {
-  animation: kedipBorder 0.8s ease-in-out 4;
-}
-
 .wrapper-textarea {
   position: relative;
   width: 100%;
@@ -237,20 +227,12 @@ header {
   text-align: center;
   position: relative;
 }
-
-.header-riwayat {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
-  border-bottom: 2px solid var(--warna-utama);
-  padding-bottom: 5px;
-  position: relative;
+#wadah-list{
+  margin:15px auto;
 }
-
-.daftar-catatan h3 {
+.daftar-catatan .header-riwayat h3 {
   color: var(--warna-utama);
-  text-align: center;
+  text-align: center !important;
 }
 
 /* 🔄 TOMBOL BATAL HAPUS (Sudah diperbaiki, diletakkan normal berdampingan) */
