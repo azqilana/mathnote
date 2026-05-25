@@ -3,41 +3,26 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="catatan,slipnote,notebook,pintar,note,harian,hari,portable,online,webnote,smartnote,menghitung,mencatat,catat,hitung">
+    <meta name="keywords" content="catatan,slipnote,notebook,pintar,note,harian,hari,portable,online,webnote,smartnote,menghitung,mencatat,catat,hitung,Kalkulator">
     <meta name="description" content="Sebuah noteweb/website catatan tempat menulis catatan atau pengingat yg dapat menghitung juga nilai angka yg tertulis">
     <meta name="author" content="Arjuna Arc">
     <meta name="robots" content="index,follow">
-    <meta name="canonical" content="https://www.smartnote.web.id">
+    <meta name="canonical" content="https://matchnote.mazqilana.my.id">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.smartnote.web.id">
-    <meta property="og:title" content="SmartNote - Catatan Pintar Harian">
+    <meta property="og:url" content="https://matchnote.mazqilana.my.id">
+    <meta property="og:title" content="MatchNote - Catatan & Kalkulator Pintar">
     <meta property="og:image" content="./note.jpg">
     <link rel="stylesheet" href="style.css" type="text/css" media="all" />
-    <title>SmartNote - Catatan Pintar Harian</title>
+    <title>MatchNote - Catatan & Kalkulator Pintar</title>
   </head>
   <body>
     <span id="notif" class="notif-sukses">Selamat, catatan telah disimpan!</span>
 
-    <header>
-      <h1>SmartNote</h1>
-      <nav>
-        <ul>
-          <li><a href="#sampul">Sampul</a></li>
-          <li><a href="#catatan">Catatan</a></li>
-          <li><a href="#daftar-catatan">Riwayat</a></li>
-        </ul>
-      </nav>
+    <header id="top-header">
+      <h1>MatchNote</h1>
     </header>
         
     <main>
-      <section id="sampul" class="kotak-tema sampul">
-        <button class="btn-tambah" id="btn-munculkan">+</button>
-        <h2>Smart note</h2>
-        <p>
-          <strong>SmartNote</strong> Adalah Webnote/website catatan yang dapat di gunakan untuk <em>mencatat catatan harian</em> yg akan <mark>tersimpan di database kami</mark> yang dapat di lihat di perangkat lain dgn hanya membuka akun anda di tempat lain kemampuan dari <strong>SmartNote</strong> antara lain adalah tentu nya <mark>menyimpan Catatan anda dgn rapi</mark> <em>menghitung angka yg ingin anda hitung</em> hanya dgn menulis angka angka itu dgn operasi yg di inginkan untuk saat ini bisa menghitung <mark>pertambahan pengurangan perkalian dan pembagian</mark>
-        </p>
-      </section>
-      
       <section id="catatan" class="catatan">
         <form>
           <fieldset>
@@ -59,21 +44,20 @@
           </fieldset>
         </form>
       </section>
-
       <section id="daftar-catatan" class="kotak-tema daftar-catatan">
+      <button class="btn-tambah" id="btn-munculkan">+</button>
         <div class="header-riwayat">
           <h3>Daftar Catatan Tersimpan</h3>
-          <button type="button" id="btn-batal-hapus" class="btn-batal-hapus">Batal</button>
         </div>
-        
         <div id="wadah-list">
-          </div>
+        </div>
 
         <div class="footer-daftar">
+          <button type="button" id="btn-batal-hapus" class="btn-batal-hapus">Batal</button>
           <button type="button" id="btn-master-hapus" class="btn-pemicu-hapus">Hapus</button>
         </div>
       </section>
     </main>
-<script src="script.js" type="text/javascript" charset="utf-8"></script>
+    <script src="script.js" type="text/javascript" charset="utf-8"></script>
   </body>
 </html>
