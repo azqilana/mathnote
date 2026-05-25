@@ -315,3 +315,16 @@ formCatatan.addEventListener('submit', function(event) {
   notif.classList.add('muncul');
   setTimeout(() => { notif.classList.remove('muncul'); }, 600);
 });
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    document.addEventListener("backbutton", function (e) {
+        e.preventDefault();
+        if (navigator.app && navigator.app.exitApp) {
+            navigator.app.exitApp();
+        } else if (navigator.device && navigator.device.exitApp) {
+            navigator.device.exitApp();
+        } else {
+            window.close();
+        }
+    }, false);
+}

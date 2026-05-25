@@ -1,0 +1,37 @@
+name: Build Android APK
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install Cordova
+      run: npm install -g cordova
+
+    - name: Create Cordova Project
+      run: |
+        cordova create build-android com.match.note MatchNote
+        cd build-android
+        cordova platform add android
+        rm -rf www/*
+        cp -r ../* www/ || true
+        rm -rf www/build-android
+
+    - name: Build APK Clean
+      run: |
+        cd build-android
+        cordova build android --release
+
+    - name: Upload APK Result
+      uses: actions/upload-artifact@v3
+      with:
+        name: MatchNote-Clean-APK
+        path: build-android/platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
