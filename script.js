@@ -2,12 +2,12 @@
 class Hitung {
   constructor() {
     this.kamusOperator = [
-      { kata: /di\\s*tambah/gi, simbol: '+' },
-      { kata: /di\\s*kurang/gi, simbol: '-' },
-      { kata: /di\\s*kali/gi,   simbol: '×' },
+      { kata: /di\s*tambah/gi, simbol: '+' },
+      { kata: /di\s*kurang/gi, simbol: '-' },
+      { kata: /di\s*kali/gi,   simbol: '×' },
       { kata: /x/gi,           simbol: '×' },
       { kata: /\*/gi,          simbol: '×' }, 
-      { kata: /di\\s*bagi/gi,   simbol: '÷' },
+      { kata: /di\s*bagi/gi,   simbol: '÷' },
       { kata: /\//gi,          simbol: '÷' }  
     ];
   }
