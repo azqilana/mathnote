@@ -458,59 +458,93 @@
     </main>
 
     <script>
-      // --- INTEGRASI CLASS HITUNG SAKTI (OOP DENGAN MODUL OPERASI) ---
-      class Hitung {
-        constructor() {
-          // Modul kamus terjemahan bahasa manusia ke operator matematika dasar
-          this.kamusOperator = [
-            { kata: /di\s*tambah/gi, simbol: '+' },
-            { kata: /di\s*kurang/gi, simbol: '-' },
-            { kata: /di\s*kali/gi,   simbol: '*' },
-            { kata: /x/gi,           simbol: '*' },
-            { kata: /×/gi,           simbol: '*' },
-            { kata: /di\s*bagi/gi,   simbol: '/' },
-            { kata: /÷/gi,           simbol: '/' }
-          ];
+    // --- INTEGRASI CLASS HITUNG SAKTI (OOP DENGAN MODUL OPERASI) ---
+class Hitung {
+  constructor() {
+    // Modul kamus terjemahan bahasa manusia ke operator matematika dasar
+    this.kamusOperator = [
+      { kata: /di\s*tambah/gi, simbol: '+' },
+      { kata: /di\s*kurang/gi, simbol: '-' },
+      { kata: /di\s*kali/gi,   simbol: '*' },
+      { kata: /x/gi,           simbol: '*' },
+      { kata: /×/gi,           simbol: '*' },
+      { kata: /di\s*bagi/gi,   simbol: '/' },
+      { kata: /÷/gi,           simbol: '/' }
+    ];
+  }
+
+  // Fungsi tambahan untuk membersihkan tanda operator yang berdekatan
+  bersihkanTanda(ekspresi) {
+    // Mengubah -- menjadi + (seperti kasus 6--4 menjadi 6+4)
+    ekspresi = ekspresi.replace(/--/g, '+');
+    // Mengubah +- atau -+ menjadi -
+    ekspresi = ekspresi.replace(/\+-|-\+/g, '-');
+    return ekspresi;
+  }
+
+  // Fungsi tambahan untuk menyelesaikan operasi di dalam kurung terlebih dahulu
+  prosesKurung(ekspresi) {
+    // Regex untuk mencari kurung terdalam yang tidak berisi kurung lain
+    const regexKurung = /\(([^()]+)\)/;
+
+    // Perulangan akan terus berjalan selama masih ada tanda kurung
+    while (regexKurung.test(ekspresi)) {
+      ekspresi = ekspresi.replace(regexKurung, (match, isiKurung) => {
+        try {
+          // Hitung operasi di dalam kurung menggunakan fungsi bawaan aman
+          const hasilIsi = new Function(`return ${isiKurung}`)();
+          return hasilIsi;
+        } catch (e) {
+          return 0; // Kembalikan 0 jika rumus di dalam kurung rusak
         }
+      });
 
-        // Modul Utama: Mengecek text baris terakhir dan memproses perhitungan matematika
-        prosesTeks(teksLengkap, posisiKursor) {
-          // Ambil teks dari awal hingga batas kursor ketikan saat ini
-          const teksHinggaKursor = teksLengkap.substring(0, posisiKursor);
-          
-          // Pecah baris teks, ambil hanya baris terakhir tempat kursor berada
-          const barisBaris = teksHinggaKursor.split('\n');
-          const barisTerakhir = barisBaris[barisBaris.length - 1];
+      // Bersihkan tanda setelah kurung diganti dengan angka (antisipasi angka negatif)
+      ekspresi = this.bersihkanTanda(ekspresi);
+    }
+    return ekspresi;
+  }
 
-          // Terjemahkan kata-kata manusia ke simbol matematika mentah melalui modul kamus
-          let teksMurni = barisTerakhir;
-          this.kamusOperator.forEach(item => {
-            teksMurni = teksMurni.replace(item.kata, item.simbol);
-          });
+  // Modul Utama: Mengecek text baris terakhir dan memproses perhitungan matematika
+  prosesTeks(teksLengkap, posisiKursor) {
+    // Ambil teks dari awal hingga batas kursor ketikan saat ini
+    const teksHinggaKursor = teksLengkap.substring(0, posisiKursor);
+    
+    // Pecah baris teks, ambil hanya baris terakhir tempat kursor berada
+    const barisBaris = teksHinggaKursor.split('\n');
+    const barisTerakhir = barisBaris[barisBaris.length - 1];
 
-          // Hilangkan semua karakter abjad/tulisan biasa, sisakan HANYA angka dan simbol operasi [ + - * / . ]
-          let ekspresiMatematika = teksMurni.replace(/[^0-9+\-*/.]/g, '');
+    // Terjemahkan kata-kata manusia ke simbol matematika mentah melalui modul kamus
+    let teksMurni = barisTerakhir;
+    this.kamusOperator.forEach(item => {
+      teksMurni = teksMurni.replace(item.kata, item.simbol);
+    });
 
-          // REGEX SAKTI: Validasi apakah baris mengandung struktur [Angka][Operator][Angka] yang siap dihitung
-          const polaValid = /\d+[\+\-\*\/]\d+/;
-          
-          if (polaValid.test(ekspresiMatematika)) {
-            try {
-              // Modul Eksekusi: Menghitung string ekspresi matematika secara aman
-              const hasilEvaluasi = new Function(`return ${ekspresiMatematika}`)();
-              
-              if (typeof hasilEvaluasi === 'number' && !isNaN(hasilEvaluasi) && isFinite(hasilEvaluasi)) {
-                // Kembalikan nilai hasil jika perhitungannya valid dan sukses
-                return Number(hasilEvaluasi.toFixed(2)); 
-              }
-            } catch (e) {
-              return null; // Abaikan jika terjadi eror pembagian nol atau rumus rusak
-            }
-          }
-          return null; 
+    // SEKARANG MENDUKUNG KURUNG: Karakter ( dan ) tidak akan dihapus
+    let ekspresiMatematika = teksMurni.replace(/[^0-9+\-*/.()]/g, '');
+
+    // REGEX PERBAIKAN: Validasi melonggar untuk memastikan ada angka dan operator yang siap dihitung
+    const polaValid = /\d+[\+\-\*\/]\d+/;
+    
+    if (polaValid.test(ekspresiMatematika)) {
+      try {
+        // Selesaikan semua operasi dalam kurung terlebih dahulu
+        ekspresiMatematika = this.prosesKurung(ekspresiMatematika);
+
+        // Modul Eksekusi Akhir: Menghitung sisa ekspresi setelah kurung habis
+        const hasilEvaluasi = new Function(`return ${ekspresiMatematika}`)();
+        
+        if (typeof hasilEvaluasi === 'number' && !isNaN(hasilEvaluasi) && isFinite(hasilEvaluasi)) {
+          // Kembalikan nilai hasil jika perhitungannya valid dan sukses
+          return Number(hasilEvaluasi.toFixed(2)); 
         }
+      } catch (e) {
+        return null; // Abaikan jika terjadi eror
       }
-
+    }
+    return null; 
+  }
+}
       // 1. Ambil elemen DOM
       const btnMunculkan = document.getElementById('btn-munculkan');
       const btnTutupCatatan = document.getElementById('btn-tutup-catatan');
