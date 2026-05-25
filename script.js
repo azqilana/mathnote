@@ -2,19 +2,19 @@
 class Hitung {
   constructor() {
     this.kamusOperator = [
-      { kata: /di\s*tambah/gi, simbol: '+' },
-      { kata: /di\s*kurang/gi, simbol: '-' },
-      { kata: /di\s*kali/gi,   simbol: '*' },
-      { kata: /x/gi,           simbol: '*' },
-      { kata: /×/gi,           simbol: '*' },
-      { kata: /di\s*bagi/gi,   simbol: '/' },
-      { kata: /÷/gi,           simbol: '/' }
+      { kata: /di\\s*tambah/gi, simbol: '+' },
+      { kata: /di\\s*kurang/gi, simbol: '-' },
+      { kata: /di\\s*kali/gi,   simbol: '×' },
+      { kata: /x/gi,           simbol: '×' },
+      { kata: /\*/gi,          simbol: '×' }, 
+      { kata: /di\\s*bagi/gi,   simbol: '÷' },
+      { kata: /\//gi,          simbol: '÷' }  
     ];
   }
 
   bersihkanTanda(ekspresi) {
     ekspresi = ekspresi.replace(/--/g, '+');
-    ekspresi = ekspresi.replace(/\+-|-\+/g, '-');
+    ekspresi = ekspresi.replace(/\+-\|-\+/g, '-');
     return ekspresi;
   }
 
@@ -23,7 +23,8 @@ class Hitung {
     while (regexKurung.test(ekspresi)) {
       ekspresi = ekspresi.replace(regexKurung, (match, isiKurung) => {
         try {
-          const hasilIsi = new Function(`return ${isiKurung}`)();
+          let ekspresiInternal = isiKurung.replace(/×/g, '*').replace(/÷/g, '/');
+          const hasilIsi = new Function(`return ${ekspresiInternal}`)();
           return hasilIsi;
         } catch (e) {
           return 0;
@@ -34,23 +35,94 @@ class Hitung {
     return ekspresi;
   }
 
+  // ✨ PERBAIKAN LOGIKA: Memproses kalkulasi angka berurutan global (Koma & Blok Titik Dua)
+  prosesAngkaBerurutan(teksHinggaKursor) {
+    // 1. Ambil baris terakhir tempat kursor berada untuk mendeteksi simbol operasi akhir (+=, -=, ×=, ÷=)
+    const barisBaris = teksHinggaKursor.split('\n');
+    const barisTerakhir = barisBaris[barisBaris.length - 1].trim();
+
+    const regexOperasiAkhir = /^([\+\-\×\÷]=)\s*$/;
+    const cocokOperasi = barisTerakhir.match(regexOperasiAkhir);
+    
+    // Jika baris paling bawah tempat mengetik bukan/belum diakhiri +=, -=, ×=, atau ÷=, abaikan
+    if (!cocokOperasi) return null; 
+    
+    const operasi = cocokOperasi[1]; 
+    let arrayAngka = [];
+
+    // 2. JIKA FORMAT TITIK DUA (Nama:Angka)
+    // Kita cek seluruh teks dari baris-baris sebelumnya, apakah mengandung tanda titik dua
+    if (teksHinggaKursor.includes(':')) {
+      // Regex global mencari kata diikuti titik dua lalu angka murni
+      const regexTitikDua = /[^:\s\n]+:\s*(\d+(?:\.\d+)?)/g;
+      let cocokItem;
+      
+      while ((cocokItem = regexTitikDua.exec(teksHinggaKursor)) !== null) {
+        const nilaiAngka = parseFloat(cocokItem[1]);
+        if (!isNaN(nilaiAngka)) {
+          arrayAngka.push(nilaiAngka);
+        }
+      }
+    } 
+    // 3. JIKA FORMAT KOMA STANDARD (1,4,5,6)
+    else {
+      // Ambil baris tepat di atasnya atau baris yang sama sebelum tanda operasi
+      let kontenAngka = barisBaris.length > 1 ? barisBaris[barisBaris.length - 2] : barisTerakhir.replace(regexOperasiAkhir, '');
+      if (kontenAngka.includes(',')) {
+        arrayAngka = kontenAngka
+          .split(',')
+          .map(num => parseFloat(num.trim()))
+          .filter(num => !isNaN(num));
+      }
+    }
+
+    if (arrayAngka.length === 0) return null;
+
+    // 4. KALKULASI REDUCE WITH ACCUMULATOR
+    const hasilKalkulasi = arrayAngka.reduce((akumulator, nilaiSekarang, indeks) => {
+      if (indeks === 0) return nilaiSekarang;
+
+      if (operasi === '+=') {
+        return akumulator + nilaiSekarang;
+      } else if (operasi === '-=') {
+        return akumulator - nilaiSekarang;
+      } else if (operasi === '×=') {
+        return akumulator * nilaiSekarang;
+      } else if (operasi === '÷=') {
+        return nilaiSekarang !== 0 ? akumulator / nilaiSekarang : akumulator;
+      }
+      return akumulator;
+    }, 0);
+
+    return Number(hasilKalkulasi.toFixed(2));
+  }
+
   prosesTeks(teksLengkap, posisiKursor) {
     const teksHinggaKursor = teksLengkap.substring(0, posisiKursor);
+    
+    // 1. Coba jalankan kalkulator Array Reduce (Format Koma & Titik dua multi-line)
+    const hasilBerurutan = this.prosesAngkaBerurutan(teksHinggaKursor);
+    if (hasilBerurutan !== null) {
+      return hasilBerurutan;
+    }
+
+    // 2. Jalankan kalkulator matematika standar bawaan sebelumnya (Single line)
     const barisBaris = teksHinggaKursor.split('\n');
-    const barisTerakhir = barisBaris[barisBaris.length - 1];
+    let barisTerakhir = barisBaris[barisBaris.length - 1].trim();
 
     let teksMurni = barisTerakhir;
     this.kamusOperator.forEach(item => {
       teksMurni = teksMurni.replace(item.kata, item.simbol);
     });
 
-    let ekspresiMatematika = teksMurni.replace(/[^0-9+\-*/.()]/g, '');
-    const polaValid = /[\d()]+[\+\-\*\/][\d()]+/;
+    let ekspresiMatematika = teksMurni.replace(/[^0-9+\-×÷.()]/g, '');
+    const polaValid = /[\d()]+[\+\-\×\÷][\d()]+/;
     
     if (polaValid.test(ekspresiMatematika)) {
       try {
         ekspresiMatematika = this.prosesKurung(ekspresiMatematika);
-        const hasilEvaluasi = new Function(`return ${ekspresiMatematika}`)();
+        let ekspresiFinal = ekspresiMatematika.replace(/×/g, '*').replace(/÷/g, '/');
+        const hasilEvaluasi = new Function(`return ${ekspresiFinal}`)();
         
         if (typeof hasilEvaluasi === 'number' && !isNaN(hasilEvaluasi) && isFinite(hasilEvaluasi)) {
           return Number(hasilEvaluasi.toFixed(2)); 
@@ -128,8 +200,7 @@ btnOpsiC.addEventListener('click', () => sisipkanHasil('C'));
 function tampilkanDaftar() {
   wadahList.innerHTML = ''; 
   if (daftarData.length === 0) {
-    // Ganti baris di dalam tampilkanDaftar() script.js Anda:
-      wadahList.innerHTML = '<p style="text-align:center; font-style:italic; color:var(--warna-teks-mading);">Belum ada catatan yang disimpan.</p>';
+    wadahList.innerHTML = '<p style="text-align:center; font-style:italic; color:var(--warna-teks-mading);">Belum ada catatan yang disimpan.</p>';
     keluarModeHapus();
     btnMasterHapus.style.display = 'none'
     return;
@@ -206,7 +277,6 @@ btnMasterHapus.addEventListener('click', function() {
 
 btnBatalHapus.addEventListener('click', keluarModeHapus);
 
-// Tombol Plus (Munculkan Area Menulis) - Dibikin Lebih Responsif & Auto Focus
 btnMunculkan.addEventListener('click', function(e) {
   e.preventDefault();
   if (sectionCatatan.style.display === 'none' || sectionCatatan.style.display === '') {
@@ -222,7 +292,6 @@ btnMunculkan.addEventListener('click', function(e) {
   btnMunculkan.classList.remove('tombol-kedip');
 });
 
-// Tombol Tutup Silang (X) - Menggulung balik ke Header Atas
 btnTutupCatatan.addEventListener('click', function() {
   sectionDaftar.style.display = 'block'
   sectionCatatan.style.display = 'none';
@@ -230,14 +299,11 @@ btnTutupCatatan.addEventListener('click', function() {
   document.getElementById('top-header').scrollIntoView({ behavior: 'smooth' });
 });
 
-// 🔥 PROSES PENYIMPANAN FORM (Isi Catatan wajib ada, judul boleh kosong)
 formCatatan.addEventListener('submit', function(event) {
   event.preventDefault(); 
-  
-  // PROTEKSI KOSONG: Cek jika teks isi kosong atau cuma spasi
   if (isiCatatan.value.trim() === '') {
-    isiCatatan.focus(); // Kembalikan fokus kursor ke tempat isi
-    return; // Stop alur di sini agar tidak tersimpan ke localStorage
+    isiCatatan.focus();
+    return;
   }
   
   const catatanBaru = { 
