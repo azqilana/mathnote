@@ -35,7 +35,6 @@ class Hitung {
     return ekspresi;
   }
 
-  // ✨ PERBAIKAN LOGIKA: Mendukung spasi bebas di sekitar tanda titik dua ( : )
   prosesAngkaBerurutan(teksHinggaKursor) {
     const barisBaris = teksHinggaKursor.split('\n');
     const barisTerakhir = barisBaris[barisBaris.length - 1].trim();
@@ -49,7 +48,6 @@ class Hitung {
     let arrayAngka = [];
 
     if (teksHinggaKursor.includes(':')) {
-      // 🛠️ REGEX BARU: [^:\s\n]+ mencari nama kata, \s*:\s* mengizinkan spasi sebelum & sesudah titik dua
       const regexTitikDua = /[^:\s\n]+\s*:\s*(\d+(?:\.\d+)?)/g;
       let cocokItem;
       
@@ -72,7 +70,6 @@ class Hitung {
 
     if (arrayAngka.length === 0) return null;
 
-    // KALKULASI REDUCE WITH ACCUMULATOR
     const hasilKalkulasi = arrayAngka.reduce((akumulator, nilaiSekarang, indeks) => {
       if (indeks === 0) return nilaiSekarang;
 
@@ -146,9 +143,13 @@ const teksHasilHitung = document.getElementById('teks-hasil-hitung');
 const btnOpsiA = document.getElementById('btn-opsi-a');
 const btnOpsiC = document.getElementById('btn-opsi-c');
 
-// Inisialisasi
+// Inisialisasi Elemen Panduan
+const halamanPanduan = document.getElementById("halaman-panduan");
+const tombolMengerti = document.getElementById("tombol-mengerti");
+const btnPanduan = document.getElementById("btn-panduan");
+
+// Inisialisasi Sistem
 const mesinHitung = new Hitung();
-let nilaiHasilGlobal = null; 
 let isModeHapus = false;
 let daftarData = [];
 
@@ -168,6 +169,8 @@ isiCatatan.addEventListener('input', function() {
     tooltip.style.display = 'none';
   }
 });
+
+let nilaiHasilGlobal = null; 
 
 function sisipkanHasil(format) {
   if (nilaiHasilGlobal === null) return;
@@ -315,6 +318,26 @@ formCatatan.addEventListener('submit', function(event) {
   notif.classList.add('muncul');
   setTimeout(() => { notif.classList.remove('muncul'); }, 600);
 });
+
+// --- 📋 SISTEM MANAGEMENT PANDUAN (Terintegrasi Aman) ---
+// 1. Jalankan cek memori lokal saat pertama kali halaman dimuat
+const sudahBacaPanduan = localStorage.getItem("matchnote_baca_panduan");
+if (!sudahBacaPanduan) {
+  halamanPanduan.classList.remove("hidden");
+}
+
+// 2. Aksi tombol "Saya Mengerti" (Menutup)
+tombolMengerti.addEventListener("click", function() {
+  localStorage.setItem("matchnote_baca_panduan", "true");
+  halamanPanduan.classList.add("hidden");
+});
+
+// 3. Aksi tombol tanda tanya ❓ di header (Membuka kembali)
+btnPanduan.addEventListener("click", function() {
+  halamanPanduan.classList.remove("hidden");
+});
+
+// Sistem tombol kembali Android (Capacitor)
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
     document.addEventListener("backbutton", function (e) {

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MatchNote</string>
+    <string name="title_activity_main">MatchNote</string>
+    <string name="package_name">com.azqi.matchnote</string>
+    <string name="custom_url_scheme">com.azqi.matchnote</string>
+</resources>

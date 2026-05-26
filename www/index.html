@@ -17,6 +17,41 @@
     <title>MatchNote - Catatan & Kalkulator Pintar</title>
   </head>
   <body>
+    <div id="halaman-panduan" class="hidden">
+      <div class="konten-panduan">
+        <h2>MatchNote</h2>
+        <div class="garis-pembatas"></div>
+        <div class="isi-scroll-panduan">
+          <p>Selamat datang di <strong>MatchNote</strong>, aplikasi catatan sekaligus kalkulator pintar!</p>
+          <p>Anda dapat menulis catatan dan menjadikannya kalkulator langsung. Aplikasi ini bisa menjadi catatan yang menghitung sehingga membantu menghitung belanjaan Anda sesuai dengan tata cara yang disediakan.</p>
+          
+          <h4>Cara untuk Mencatat:</h4>
+          <ol>
+            <li>Klik tombol <strong>+</strong></li>
+            <li>Ketik judul (opsional)</li>
+            <li>Ketik isinya</li>
+            <li>Klik <strong>Simpan</strong></li>
+          </ol>
+
+          <h4>Cara Menghitung (Format):</h4>
+          <p>Untuk menghitung, cukup menulis angka dan operasi yang diizinkan sesuai format berikut:</p>
+          
+          <div class="kotak-contoh">
+            <strong>Cara 1 (Baris Tunggal):</strong><br>
+            <code>1+1</code><br>
+            <small>*Akan muncul tooltip memberikan jawaban yang tinggal diklik.</small>
+          </div>
+
+          <div class="kotak-contoh">
+            <strong>Cara 2 (Hitung Belanjaan/Berurutan):</strong><br>
+            <code>Ayam : 15000<br>Mie : 7000<br>+=</code><br>
+            <small>*Ketik tanda operasi yang dimau diikuti tanda sama dengan (contoh: <code>+=</code>, <code>-=</code>, <code>×=</code>, <code>÷=</code>) maka tooltip jawaban akan muncul.</small>
+          </div>
+        </div>
+        <button type="button" id="tombol-mengerti">Saya Mengerti, Mulai!</button>
+      </div>
+    </div>
+
     <span id="notif" class="notif-sukses">Selamat, catatan telah disimpan!</span>
 
     <header id="top-header">
@@ -46,11 +81,14 @@
           </fieldset>
         </form>
       </section>
+      
       <section id="daftar-catatan" class="kotak-tema daftar-catatan">
-      <button class="btn-tambah" id="btn-munculkan">+</button>
-          <h3 id="tengah">Daftar Catatan Tersimpan</h3>
-        <div id="wadah-list">
-        </div>
+        <button type="button" id="btn-panduan" title="Panduan Penggunaan">❓</button>
+        
+        <button class="btn-tambah" id="btn-munculkan">+</button>
+        
+        <h3 id="tengah">Daftar Catatan Tersimpan</h3>
+        <div id="wadah-list"></div>
 
         <div class="footer-daftar">
           <button type="button" id="btn-batal-hapus" class="btn-batal-hapus">Batal</button>

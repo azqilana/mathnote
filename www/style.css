@@ -366,3 +366,154 @@ header {
   padding: 8px 15px;
   box-shadow: 0 4px 6px var(--warna-bayangan-soft);
 }
+/* --- 📋 STYLE POP-UP PANDUAN MATCHNOTE --- */
+
+/* Class utilitas untuk menyembunyikan elemen */
+.hidden {
+  display: none !important;
+}
+
+/* Tombol tanya panduan di pojok kiri atas header */
+/* Tombol panduan di pojok kiri atas section daftar catatan (berseberangan dengan tombol +) */
+#btn-panduan {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  background-color: var(--warna-utama);
+  color: var(--warna-kertas);
+  border: none;
+  border-radius: 10%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px var(--warna-bayangan);
+  z-index: 99;
+}
+
+#btn-panduan:active {
+  transform: scale(0.9);
+}
+
+/* Background overlay hitam transparan memenuhi layar penuh */
+#halaman-panduan {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  z-index: 3000; /* Berada di atas seluruh elemen termasuk notif */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Box Putih Konten Panduan */
+.konten-panduan {
+  background-color: var(--warna-kertas);
+  color: var(--warna-teks-gelap);
+  width: 85%;
+  max-width: 420px;
+  max-height: 85vh;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px var(--warna-bayangan);
+  display: flex;
+  flex-direction: column;
+}
+
+.konten-panduan h2 {
+  color: var(--warna-utama);
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.garis-pembatas {
+  height: 3px;
+  background: linear-gradient(to right, transparent, var(--warna-utama), transparent);
+  margin-bottom: 15px;
+}
+
+/* Area isi yang bisa di-scroll jika layar HP kecil */
+.isi-scroll-panduan {
+  overflow-y: auto;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.5;
+  padding-right: 5px;
+}
+
+.isi-scroll-panduan p {
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.isi-scroll-panduan h4 {
+  text-align: left;
+  color: var(--warna-utama);
+  margin: 15px 0 5px 0;
+  border-left: 3px solid var(--warna-muda);
+  padding-left: 8px;
+}
+
+.isi-scroll-panduan ol {
+  text-align: left;
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.isi-scroll-panduan ol li {
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+/* Kotak sorotan untuk contoh cara menghitung */
+.kotak-contoh {
+  background-color: var(--warna-transparan);
+  border-left: 4px solid var(--warna-utama);
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  text-align: left;
+}
+
+.kotak-contoh strong, .kotak-contoh small {
+  text-align: left;
+  display: block;
+}
+
+.kotak-contoh code {
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: bold;
+  display: inline-block;
+  margin: 4px 0;
+  text-align: left;
+}
+
+/* Tombol konfirmasi tutup panduan */
+#tombol-mengerti {
+  background-color: var(--warna-utama);
+  color: var(--warna-kertas);
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  box-shadow: 0 4px 6px var(--warna-bayangan-soft);
+  transition: background 0.2s;
+}
+
+#tombol-mengerti:active {
+  background-color: var(--warna-muda);
+}
