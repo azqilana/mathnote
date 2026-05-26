@@ -30,17 +30,13 @@ jobs:
     - name: Install Dependencies
       run: npm install
 
-    - name: Create www directory if missing
-      run: mkdir -p www
-
-    - name: Copy files to www if missing
-      run: cp index.html style.css script.js www/ 2>/dev/null || true
+    - name: Prepare Web Assets Folder
+      run: |
+        mkdir -p www
+        cp index.html style.css script.js www/ 2>/dev/null || true
 
     - name: Sync Capacitor to Android
       run: npx cap sync android
-
-    - name: Accept Android Licenses
-      run: yes | source $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
     - name: Grant Execute Permission for Gradle
       run: chmod +x android/gradlew
