@@ -1,15 +1,34 @@
 // --- INTEGRASI CLASS HITUNG SAKTI (OOP DENGAN MODUL OPERASI) ---
 class Hitung {
   constructor() {
-    this.kamusOperator = [
-      { kata: /di\s*tambah/gi, simbol: '+' },
-      { kata: /di\s*kurang/gi, simbol: '-' },
-      { kata: /di\s*kali/gi,   simbol: '×' },
-      { kata: /x/gi,           simbol: '×' },
-      { kata: /\*/gi,          simbol: '×' }, 
-      { kata: /di\s*bagi/gi,   simbol: '÷' },
-      { kata: /\//gi,          simbol: '÷' }  
-    ];
+    this.kamusOperator = [{
+      kata: /di\s*tambah/gi,
+      simbol: '+'
+    },
+      {
+        kata: /di\s*kurang/gi,
+        simbol: '-'
+      },
+      {
+        kata: /di\s*kali/gi,
+        simbol: '×'
+      },
+      {
+        kata: /x/gi,
+        simbol: '×'
+      },
+      {
+        kata: /\*/gi,
+        simbol: '×'
+      },
+      {
+        kata: /di\s*bagi/gi,
+        simbol: '÷'
+      },
+      {
+        kata: /\//gi,
+        simbol: '÷'
+      }];
   }
 
   bersihkanTanda(ekspresi) {
@@ -41,30 +60,29 @@ class Hitung {
 
     const regexOperasiAkhir = /^([\+\-\×\÷]=)\s*$/;
     const cocokOperasi = barisTerakhir.match(regexOperasiAkhir);
-    
-    if (!cocokOperasi) return null; 
-    
-    const operasi = cocokOperasi[1]; 
+
+    if (!cocokOperasi) return null;
+
+    const operasi = cocokOperasi[1];
     let arrayAngka = [];
 
     if (teksHinggaKursor.includes(':')) {
       const regexTitikDua = /[^:\s\n]+\s*:\s*(\d+(?:\.\d+)?)/g;
       let cocokItem;
-      
+
       while ((cocokItem = regexTitikDua.exec(teksHinggaKursor)) !== null) {
         const nilaiAngka = parseFloat(cocokItem[1]);
         if (!isNaN(nilaiAngka)) {
           arrayAngka.push(nilaiAngka);
         }
       }
-    } 
-    else {
-      let kontenAngka = barisBaris.length > 1 ? barisBaris[barisBaris.length - 2] : barisTerakhir.replace(regexOperasiAkhir, '');
+    } else {
+      let kontenAngka = barisBaris.length > 1 ? barisBaris[barisBaris.length - 2]: barisTerakhir.replace(regexOperasiAkhir, '');
       if (kontenAngka.includes(',')) {
         arrayAngka = kontenAngka
-          .split(',')
-          .map(num => parseFloat(num.trim()))
-          .filter(num => !isNaN(num));
+        .split(',')
+        .map(num => parseFloat(num.trim()))
+        .filter(num => !isNaN(num));
       }
     }
 
@@ -80,17 +98,20 @@ class Hitung {
       } else if (operasi === '×=') {
         return akumulator * nilaiSekarang;
       } else if (operasi === '÷=') {
-        return nilaiSekarang !== 0 ? akumulator / nilaiSekarang : akumulator;
+        return nilaiSekarang !== 0 ? akumulator / nilaiSekarang: akumulator;
       }
       return akumulator;
-    }, 0);
+    },
+      0);
 
     return Number(hasilKalkulasi.toFixed(2));
   }
 
-  prosesTeks(teksLengkap, posisiKursor) {
-    const teksHinggaKursor = teksLengkap.substring(0, posisiKursor);
-    
+  prosesTeks(teksLengkap,
+    posisiKursor) {
+    const teksHinggaKursor = teksLengkap.substring(0,
+      posisiKursor);
+
     const hasilBerurutan = this.prosesAngkaBerurutan(teksHinggaKursor);
     if (hasilBerurutan !== null) {
       return hasilBerurutan;
@@ -106,21 +127,21 @@ class Hitung {
 
     let ekspresiMatematika = teksMurni.replace(/[^0-9+\-×÷.()]/g, '');
     const polaValid = /[\d()]+[\+\-\×\÷][\d()]+/;
-    
+
     if (polaValid.test(ekspresiMatematika)) {
       try {
         ekspresiMatematika = this.prosesKurung(ekspresiMatematika);
         let ekspresiFinal = ekspresiMatematika.replace(/×/g, '*').replace(/÷/g, '/');
         const hasilEvaluasi = new Function(`return ${ekspresiFinal}`)();
-        
+
         if (typeof hasilEvaluasi === 'number' && !isNaN(hasilEvaluasi) && isFinite(hasilEvaluasi)) {
-          return Number(hasilEvaluasi.toFixed(2)); 
+          return Number(hasilEvaluasi.toFixed(2));
         }
       } catch (e) {
         return null;
       }
     }
-    return null; 
+    return null;
   }
 }
 
@@ -164,25 +185,25 @@ isiCatatan.addEventListener('input', function() {
     nilaiHasilGlobal = hasilHitung;
     teksHasilHitung.innerText = "Hasil: " + hasilHitung;
     tooltip.style.display = 'flex';
-    tooltip.style.left = '90px'; 
-    tooltip.style.bottom = '10px'; 
+    tooltip.style.left = '90px';
+    tooltip.style.bottom = '10px';
   } else {
     tooltip.style.display = 'none';
   }
 });
 
-let nilaiHasilGlobal = null; 
+let nilaiHasilGlobal = null;
 
 function sisipkanHasil(format) {
   if (nilaiHasilGlobal === null) return;
 
   const posisiKursor = isiCatatan.selectionStart;
   const teksLama = isiCatatan.value;
-  const teksSisipan = (format === 'A') ? ` = ${nilaiHasilGlobal}` : ` (${nilaiHasilGlobal})`;
+  const teksSisipan = (format === 'A') ? ` = ${nilaiHasilGlobal}`: ` (${nilaiHasilGlobal})`;
   const teksBaru = teksLama.substring(0, posisiKursor) + teksSisipan + teksLama.substring(posisiKursor);
-  
+
   isiCatatan.value = teksBaru;
-  tooltip.style.display = 'none'; 
+  tooltip.style.display = 'none';
   nilaiHasilGlobal = null;
 
   isiCatatan.focus();
@@ -194,7 +215,7 @@ btnOpsiA.addEventListener('click', () => sisipkanHasil('A'));
 btnOpsiC.addEventListener('click', () => sisipkanHasil('C'));
 
 function tampilkanDaftar() {
-  wadahList.innerHTML = ''; 
+  wadahList.innerHTML = '';
   if (daftarData.length === 0) {
     wadahList.innerHTML = '<p style="text-align:center; font-style:italic; color:var(--warna-teks-mading);">Belum ada catatan yang disimpan.</p>';
     keluarModeHapus();
@@ -203,18 +224,18 @@ function tampilkanDaftar() {
   }
 
   daftarData.forEach((item, index) => {
-    const judulFix = item.judul.trim() === '' ? 'Tanpa Judul' : item.judul;
+    const judulFix = item.judul.trim() === '' ? 'Tanpa Judul': item.judul;
     const itemDiv = document.createElement('div');
     itemDiv.className = 'item-catatan';
     itemDiv.innerHTML = `
-      <div class="item-judul" onclick="handleKlikList(this, ${index})">
-        <span class="teks-judul">${judulFix}</span>
-        <div class="grup-tombol-aksi">
-          <button class="btn-edit-satuan" onclick="editCatatan(event, ${index})">✏️</button>
-          <button class="btn-hapus-satuan" onclick="hapusSatuCatatan(event, ${index})">❌</button>
-        </div>
-      </div>
-      <div class="item-isi">${item.isi}</div>
+    <div class="item-judul" onclick="handleKlikList(this, ${index})">
+    <span class="teks-judul">${judulFix}</span>
+    <div class="grup-tombol-aksi">
+    <button class="btn-edit-satuan" onclick="editCatatan(event, ${index})">✏️</button>
+    <button class="btn-hapus-satuan" onclick="hapusSatuCatatan(event, ${index})">❌</button>
+    </div>
+    </div>
+    <div class="item-isi">${item.isi}</div>
     `;
     wadahList.appendChild(itemDiv);
     btnMasterHapus.style.display = 'block'
@@ -222,14 +243,14 @@ function tampilkanDaftar() {
 }
 
 function handleKlikList(elemenJudul, index) {
-  if (isModeHapus) return; 
+  if (isModeHapus) return;
   elemenJudul.parentElement.classList.toggle('aktif');
 }
 
 function hapusSatuCatatan(event, index) {
-  event.stopPropagation(); 
+  event.stopPropagation();
   if (confirm('Apakah kamu yakin ingin menghapus catatan ini?')) {
-    daftarData.splice(index, 1); 
+    daftarData.splice(index, 1);
     simpanKeLokal();
     tampilkanDaftar();
   }
@@ -251,8 +272,12 @@ function editCatatan(event, index) {
   // Keluar dari mode pilih
   keluarModeHapus();
 
-  sectionCatatan.scrollIntoView({ behavior: 'smooth' });
-  setTimeout(() => { isiCatatan.focus(); }, 300);
+  sectionCatatan.scrollIntoView({
+    behavior: 'smooth'
+  });
+  setTimeout(() => {
+    isiCatatan.focus();
+  }, 300);
 }
 
 function keluarModeHapus() {
@@ -264,6 +289,8 @@ function keluarModeHapus() {
 
 function simpanKeLokal() {
   localStorage.setItem('smartnote_array_data', JSON.stringify(daftarData));
+  sectionCatatan.style.display = "none"
+  sectionDaftar.style.display = "block"
 }
 
 function muatDataLokal() {
@@ -276,7 +303,7 @@ function muatDataLokal() {
 muatDataLokal();
 
 btnMasterHapus.addEventListener('click', function() {
-  if (daftarData.length === 0) return; 
+  if (daftarData.length === 0) return;
   if (!isModeHapus) {
     isModeHapus = true;
     sectionDaftar.classList.add('mode-hapus');
@@ -285,7 +312,7 @@ btnMasterHapus.addEventListener('click', function() {
     document.querySelectorAll('.item-catatan').forEach(el => el.classList.remove('aktif'));
   } else {
     if (confirm('PERINGATAN! Apakah kamu yakin ingin MENGHAPUS SEMUA catatan?')) {
-      daftarData = []; 
+      daftarData = [];
       simpanKeLokal();
       tampilkanDaftar();
     } else {
@@ -300,9 +327,13 @@ btnMunculkan.addEventListener('click', function(e) {
   e.preventDefault();
   if (sectionCatatan.style.display === 'none' || sectionCatatan.style.display === '') {
     sectionCatatan.style.display = 'block';
-    sectionCatatan.scrollIntoView({ behavior: 'smooth' });
+    sectionCatatan.scrollIntoView({
+      behavior: 'smooth'
+    });
     sectionDaftar.style.display = 'none'
-    setTimeout(() => { inputJudul.focus(); }, 300);
+    setTimeout(() => {
+      inputJudul.focus();
+    }, 300);
   } else {
     sectionDaftar.style.display = 'block'
     sectionCatatan.style.display = 'none';
@@ -318,21 +349,23 @@ btnTutupCatatan.addEventListener('click', function() {
   sectionDaftar.style.display = 'block'
   sectionCatatan.style.display = 'none';
   tooltip.style.display = 'none';
-  document.getElementById('top-header').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('top-header').scrollIntoView({
+    behavior: 'smooth'
+  });
 });
 
 formCatatan.addEventListener('submit', function(event) {
-  event.preventDefault(); 
+  event.preventDefault();
   if (isiCatatan.value.trim() === '') {
     isiCatatan.focus();
     return;
   }
-  
-  const catatanData = { 
-    judul: inputJudul.value, 
-    isi: isiCatatan.value 
+
+  const catatanData = {
+    judul: inputJudul.value,
+    isi: isiCatatan.value
   };
-  
+
   if (indeksEdit !== null) {
     // Mode edit: perbarui catatan yang ada
     daftarData[indeksEdit] = catatanData;
@@ -341,17 +374,19 @@ formCatatan.addEventListener('submit', function(event) {
     // Mode baru: tambahkan di paling atas
     daftarData.unshift(catatanData);
   }
-  
+
   simpanKeLokal();
   keluarModeHapus();
   tampilkanDaftar();
-  
+
   inputJudul.value = '';
   isiCatatan.value = '';
   tooltip.style.display = 'none';
-  
+
   notif.classList.add('muncul');
-  setTimeout(() => { notif.classList.remove('muncul'); }, 600);
+  setTimeout(() => {
+    notif.classList.remove('muncul');
+  }, 600);
 });
 
 // --- 📋 SISTEM MANAGEMENT PANDUAN (Terintegrasi Aman) ---
@@ -375,14 +410,22 @@ btnPanduan.addEventListener("click", function() {
 // Sistem tombol kembali Android (Capacitor)
 document.addEventListener("deviceready", onDeviceReady, false);
 function onDeviceReady() {
-    document.addEventListener("backbutton", function (e) {
-        e.preventDefault();
-        if (navigator.app && navigator.app.exitApp) {
-            navigator.app.exitApp();
-        } else if (navigator.device && navigator.device.exitApp) {
-            navigator.device.exitApp();
-        } else {
-            window.close();
-        }
-    }, false);
+  document.addEventListener("backbutton", function (e) {
+    e.preventDefault();
+    if (navigator.app && navigator.app.exitApp) {
+      navigator.app.exitApp();
+    } else if (navigator.device && navigator.device.exitApp) {
+      navigator.device.exitApp();
+    } else {
+      window.close();
+    }
+  },
+    false);
+}
+const isAndroidApp =
+window.location.href.startsWith("capacitor://") ||
+window.location.href.startsWith("http://localhost");
+
+if (isAndroidApp) {
+  document.getElementById("downloadBtn").style.display = "none";
 }

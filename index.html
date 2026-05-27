@@ -1,101 +1,113 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="catatan,slipnote,notebook,pintar,note,harian,hari,portable,online,webnote,smartnote,menghitung,mencatat,catat,hitung,Kalkulator">
-    <meta name="description" content="Sebuah noteweb/website catatan tempat menulis catatan atau pengingat yg dapat menghitung juga nilai angka yg tertulis">
-    <meta name="author" content="Arjuna Arc">
-    <meta name="robots" content="index,follow">
-    <meta name="canonical" content="https://mathnote.mazqilana.my.id">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mathnote.mazqilana.my.id">
-    <meta property="og:title" content="MathNote - Catatan & Kalkulator Pintar">
-    <meta property="og:image" content="./iconmn.webp">
-    <link rel="stylesheet" href="style.css" type="text/css" media="all" />
-    <link rel="shortcut icon" href="iconmn.webp" type="image/x-icon" />
-    <title>MathNote - Catatan & Kalkulator Pintar</title>
-  </head>
-  <body>
-    <div id="halaman-panduan" class="hidden">
-      <div class="konten-panduan">
-        <h2>MathNote</h2>
-        <div class="garis-pembatas"></div>
-        <div class="isi-scroll-panduan">
-          <p>Selamat datang di <strong>MathNote</strong>, aplikasi catatan sekaligus kalkulator pintar!</p>
-          <p>Anda dapat menulis catatan dan menjadikannya kalkulator langsung. Aplikasi ini bisa menjadi catatan yang menghitung sehingga membantu menghitung belanjaan Anda sesuai dengan tata cara yang disediakan.</p>
-          
-          <h4>Cara untuk Mencatat:</h4>
-          <ol>
-            <li>Klik tombol <strong>+</strong></li>
-            <li>Ketik judul (opsional)</li>
-            <li>Ketik isinya</li>
-            <li>Klik <strong>Simpan</strong></li>
-          </ol>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="keywords" content="catatan,slipnote,notebook,pintar,note,harian,hari,portable,online,webnote,smartnote,menghitung,mencatat,catat,hitung,Kalkulator">
+<meta name="description" content="Sebuah noteweb/website catatan tempat menulis catatan atau pengingat yg dapat menghitung juga nilai angka yg tertulis">
+<meta name="author" content="Arjuna Arc">
+<meta name="robots" content="index,follow">
+<meta name="canonical" content="https://mathnote.mazqilana.my.id">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mathnote.mazqilana.my.id">
+<meta property="og:title" content="MathNote - Catatan & Kalkulator Pintar">
+<meta property="og:image" content="./iconmn.webp">
+<link rel="stylesheet" href="style.css" type="text/css" media="all" />
+<link rel="shortcut icon" href="iconmn.webp" type="image/x-icon" />
+<title>MathNote - Catatan & Kalkulator Pintar</title>
+</head>
+<body>
+<div id="halaman-panduan" class="hidden">
+<div class="konten-panduan">
+<h2>MathNote</h2>
+<div class="garis-pembatas"></div>
+<div class="isi-scroll-panduan">
+<p>
+Selamat datang di <strong>MathNote</strong>, aplikasi catatan sekaligus kalkulator pintar!
+</p>
+<p>
+Anda dapat menulis catatan dan menjadikannya kalkulator langsung. Aplikasi ini bisa menjadi catatan yang menghitung sehingga membantu menghitung belanjaan Anda sesuai dengan tata cara yang disediakan.
+</p>
 
-          <h4>Cara Menghitung (Format):</h4>
-          <p>Untuk menghitung, cukup menulis angka dan operasi yang diizinkan sesuai format berikut:</p>
-          
-          <div class="kotak-contoh">
-            <strong>Cara 1 (Baris Tunggal):</strong><br>
-            <code>1+1</code><br>
-            <small>*Akan muncul tooltip memberikan jawaban yang tinggal diklik.</small>
-          </div>
+<h4>Cara untuk Mencatat:</h4>
+<ol>
+<li>Klik tombol <strong>+</strong></li>
+<li>Ketik judul (opsional)</li>
+<li>Ketik isinya</li>
+<li>Klik <strong>Simpan</strong></li>
+</ol>
 
-          <div class="kotak-contoh">
-            <strong>Cara 2 (Hitung Belanjaan/Berurutan):</strong><br>
-            <code>Ayam : 15000<br>Mie : 7000<br>+=</code><br>
-            <small>*Ketik tanda operasi yang dimau diikuti tanda sama dengan (contoh: <code>+=</code>, <code>-=</code>, <code>×=</code>, <code>÷=</code>) maka tooltip jawaban akan muncul.</small>
-          </div>
-        </div>
-        <button type="button" id="tombol-mengerti">Saya Mengerti, Mulai!</button>
-      </div>
-    </div>
+<h4>Cara Menghitung (Format):</h4>
+<p>
+Untuk menghitung, cukup menulis angka dan operasi yang diizinkan sesuai format berikut:
+</p>
 
-    <span id="notif" class="notif-sukses">Selamat, catatan telah disimpan!</span>
+<div class="kotak-contoh">
+<strong>Cara 1 (Baris Tunggal):</strong><br>
+<code>1+1</code><br>
+<small>*Akan muncul tooltip memberikan jawaban yang tinggal diklik.</small>
+</div>
 
-    <header id="top-header">
-      <h1>MathNote</h1>
-      <h3>Aplikasi Catatan Dan <br>Kalkulator Pintar</h3>
-    </header>
-        
-    <main>
-      <section id="catatan" class="catatan">
-        <form>
-          <fieldset>
-            <div class="header-buku">
-              <button type="submit" class="btn-simpan">Simpan</button>
-              <input type="text" id="judul" name="judul" class="input-judul" placeholder="JUDUL">
-              <button type="button" id="btn-tutup-catatan" class="btn-tutup">&times;</button>
-            </div>
-            
-            <div class="wrapper-textarea">
-              <textarea id="isi-catatan" name="isi-catatan" class="textarea-buku" placeholder="Tulis catatan dan hitung di sini..."></textarea>
-              
-              <div id="tooltip-kalkulator" class="tooltip-hitung">
-                <span id="teks-hasil-hitung">Hasil: 0</span>
-                <button type="button" id="btn-opsi-a">= Hasil</button>
-                <button type="button" id="btn-opsi-c">(Hasil)</button>
-              </div>
-            </div>
-          </fieldset>
-        </form>
-      </section>
-      
-      <section id="daftar-catatan" class="kotak-tema daftar-catatan">
-        <button type="button" id="btn-panduan" title="Panduan Penggunaan">❓</button>
-        
-        <button class="btn-tambah" id="btn-munculkan">+</button>
-        
-        <h3 id="tengah">Daftar Catatan Tersimpan</h3>
-        <div id="wadah-list"></div>
+<div class="kotak-contoh">
+<strong>Cara 2 (Hitung Belanjaan/Berurutan):</strong><br>
+<code>Ayam : 15000<br>Mie : 7000<br>+=</code><br>
+<small>*Ketik tanda operasi yang dimau diikuti tanda sama dengan (contoh: <code>+=</code>, <code>-=</code>, <code>×=</code>, <code>÷=</code>) maka tooltip jawaban akan muncul.</small>
+</div>
+</div>
+<button type="button" id="tombol-mengerti">Saya Mengerti, Mulai!</button>
+</div>
+</div>
 
-        <div class="footer-daftar">
-          <button type="button" id="btn-batal-hapus" class="btn-batal-hapus">Batal</button>
-          <button type="button" id="btn-master-hapus" class="btn-pemicu-hapus">Pilih</button>
-        </div>
-      </section>
-    </main>
-    <script src="script.js" type="text/javascript" charset="utf-8"></script>
-  </body>
+<span id="notif" class="notif-sukses">Selamat, catatan telah disimpan!</span>
+
+<header id="top-header">
+<h1>MathNote</h1>
+<h3>Aplikasi Catatan Dan <br>Kalkulator Pintar</h3>
+</header>
+
+<main>
+<section id="catatan" class="catatan">
+<form>
+<fieldset>
+<div class="header-buku">
+<button type="submit" class="btn-simpan">Simpan</button>
+<input type="text" id="judul" name="judul" class="input-judul" placeholder="JUDUL">
+<button type="button" id="btn-tutup-catatan" class="btn-tutup">&times;</button>
+</div>
+
+<div class="wrapper-textarea">
+<textarea id="isi-catatan" name="isi-catatan" class="textarea-buku" placeholder="Tulis catatan dan hitung di sini..."></textarea>
+
+<div id="tooltip-kalkulator" class="tooltip-hitung">
+<span id="teks-hasil-hitung">Hasil: 0</span>
+<button type="button" id="btn-opsi-a">= Hasil</button>
+<button type="button" id="btn-opsi-c">(Hasil)</button>
+</div>
+</div>
+</fieldset>
+</form>
+</section>
+
+<section id="daftar-catatan" class="kotak-tema daftar-catatan">
+<button type="button" id="btn-panduan" title="Panduan Penggunaan">❓</button>
+
+<button class="btn-tambah" id="btn-munculkan">+</button>
+<h3>Daftar Catatan Tersimpan</h3>
+<div class="header-daftar">
+<button type="button" id="btn-batal-hapus" class="btn-batal-hapus">Batal</button>
+<button type="button" id="btn-master-hapus" class="btn-pemicu-hapus">Pilih</button>
+</div>
+<div class="list-daftar">
+<div id="wadah-list"></div>
+</div>
+</section>
+<footer>
+<a href="download-link.apk" id="downloadBtn" class="download-btn">
+<span>⬇</span>
+Download
+</a>
+</footer>
+</main>
+<script src="script.js" type="text/javascript" charset="utf-8"></script>
+</body>
 </html>

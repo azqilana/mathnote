@@ -1,21 +1,28 @@
 /* --- CSS VARIABLES TEMA --- */
 :root {
-  --warna-utama: #4a2c11;           
-  --warna-muda: #a67c52;            
-  --warna-transparan: rgba(245, 222, 179, 0.5);   
-  --warna-kertas: #ffffff;          
-  --warna-garis-merah: #ff4d4d;     
-  --warna-garis-biru: #a6c8ff;      
-  --warna-teks-tombol: #555555;     
-  --warna-teks-gelap: #2e1a08;      
-  --warna-merah-hapus: #d32f2f;  
+  --warna-utama: #4a2c11;
+  --warna-muda: #a67c52;
+  --warna-transparan: rgba(245, 222, 179, 0.5);
+  --warna-kertas: #ffffff;
+  --warna-garis-merah: #ff4d4d;
+  --warna-garis-biru: #a6c8ff;
+  --warna-teks-tombol: #555555;
+  --warna-teks-gelap: #2e1a08;
+  --warna-merah-hapus: #d32f2f;
   --warna-tooltip-bg: #333333;
-  --warna-biru-batal: #0000ff;        
-  --warna-teks-mading: #666666;       
+  --warna-biru-batal: #0000ff;
+  --warna-teks-mading: #666666;
   --warna-bayangan: rgba(0, 0, 0, 0.3);
   --warna-bayangan-soft: rgba(0, 0, 0, 0.2);
   --warna-bayangan-notif: rgba(0, 0, 0, 0.4);
   --warna-overlay-judul: rgba(74, 44, 17, 0.1);
+  --warna-putih-transparan-soft: rgba(255,255,255,0.08);
+  --warna-putih-transparan: rgba(255,255,255,0.15);
+  --warna-putih-transparan-hover: rgba(255,255,255,0.2);
+  --warna-putih-shine: rgba(255,255,255,0.22);
+  --tombol-download: green;
+  --tinggi-daftar: 73vh;
+  --ukuran-huruf: 12px;
 }
 
 /* Reset Global & Meratakan Semua ke Tengah */
@@ -23,13 +30,14 @@
   margin: 0;
   padding: 0;
   text-align: center;
-}      
+}
 
 body {
   background: linear-gradient(to bottom, var(--warna-utama), var(--warna-muda));
   min-height: 100vh;
   font-family: sans-serif;
   position: relative;
+  overflow: hidden;
 }
 
 header {
@@ -38,19 +46,19 @@ header {
 }
 
 .kotak-tema {
-  background-color: var(--warna-transparan); 
-  border: 2px solid var(--warna-utama); 
-  border-radius: 20px; 
-  margin: 20px auto; 
-  width: 90%; 
+  background-color: var(--warna-transparan);
+  border: 2px solid var(--warna-utama);
+  border-radius: 20px;
+  margin: 20px auto;
+  width: 90%;
   box-sizing: border-box;
   color: var(--warna-teks-gelap);
 }
 
 .btn-tambah {
   position: absolute;
-  top: 4px;      
-  right: 5px;     
+  top: 4px;
+  right: 5px;
   width: 40px;
   height: 40px;
   border-radius: 10%;
@@ -72,7 +80,7 @@ header {
 }
 
 .catatan {
-  display: none; 
+  display: none;
   width: 90%;
   margin: 20px auto;
   background: var(--warna-kertas);
@@ -95,8 +103,8 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 45px 10px 90px; 
-  border-bottom: 2px double var(--warna-utama); 
+  padding: 10px 45px 10px 90px;
+  border-bottom: 2px double var(--warna-utama);
 }
 
 .input-judul {
@@ -106,17 +114,17 @@ header {
   font-size: 18px;
   font-weight: bold;
   background: transparent;
-  text-align: left; 
+  text-align: left;
 }
 
 .btn-simpan {
   position: absolute;
   left: 0;
   top: 0;
-  width: 79px; 
-  height: 100%; 
-  background: transparent; 
-  color: var(--warna-teks-tombol); 
+  width: 79px;
+  height: 100%;
+  background: transparent;
+  color: var(--warna-teks-tombol);
   border: none;
   font-weight: bold;
   font-size: 16px;
@@ -133,9 +141,9 @@ header {
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
-  color: var(--warna-teks-tombol); 
+  color: var(--warna-teks-tombol);
   border: none;
-  font-size: 26px; 
+  font-size: 26px;
   font-weight: bold;
   cursor: pointer;
   outline: none;
@@ -143,7 +151,7 @@ header {
 }
 
 .btn-tutup:hover {
-  color: var(--warna-garis-merah); 
+  color: var(--warna-garis-merah);
 }
 
 .wrapper-textarea {
@@ -158,18 +166,18 @@ header {
   outline: none;
   resize: none;
   box-sizing: border-box;
-  padding: 0 15px 0 90px; 
+  padding: 0 15px 0 90px;
   font-size: 18px;
-  line-height: 30px; 
+  line-height: 30px;
   background: transparent;
-  text-align: left; 
+  text-align: left;
   background-image: linear-gradient(transparent 29px, var(--warna-garis-biru) 29px, var(--warna-garis-biru) 30px, transparent 30px);
-  background-size: 100% 30px; 
+  background-size: 100% 30px;
 }
 
 .tooltip-hitung {
   position: absolute;
-  display: none; 
+  display: none;
   background-color: var(--warna-tooltip-bg);
   color: var(--warna-kertas);
   padding: 6px 10px;
@@ -221,14 +229,31 @@ header {
 }
 
 .daftar-catatan {
-  height: 60vh;
+  height: var(--tinggi-daftar);
   padding: 20px 15px;
   border-radius: 6px;
   text-align: center;
   position: relative;
 }
-#wadah-list{
-  margin:15px auto;
+.header-daftar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  padding: 0 50px;
+  gap: 10px;
+}
+.list-daftar {
+  overflow-y: auto;
+  max-height: calc(var(--tinggi-daftar) - 100px);
+  scrollbar-width: none;
+}
+
+.list-daftar::-webkit-scrollbar {
+  display: none;
+}
+#wadah-list {
+  margin: 15px auto;
 }
 .daftar-catatan .header-riwayat h3 {
   color: var(--warna-utama);
@@ -237,15 +262,17 @@ header {
 
 /* 🔄 TOMBOL BATAL HAPUS (Sudah diperbaiki, diletakkan normal berdampingan) */
 .btn-batal-hapus {
-  display: none; /* Hanya muncul lewat mode-hapus */
+  display: none;
+  /* Hanya muncul lewat mode-hapus */
   background-color: var(--warna-biru-batal);
   color: var(--warna-kertas);
   border-radius: 5px;
   border: none;
   font-weight: bold;
-  font-size: 15px;
+  font-size: var(--ukuran-huruf);
   cursor: pointer;
-  padding: 8px 15px; /* Sama persis ukurannya dengan tombol hapus semua */
+  padding: 8px 15px;
+  /* Sama persis ukurannya dengan tombol hapus semua */
   box-shadow: 0 4px 6px var(--warna-bayangan-soft);
   transition: all 0.3s ease;
   outline: none;
@@ -265,7 +292,7 @@ header {
 }
 
 .daftar-catatan.mode-hapus .item-catatan {
-  border: 5px solid var(--warna-muda) !important;
+  border: 7px solid var(--warna-muda) !important;
 }
 
 .item-judul {
@@ -337,30 +364,21 @@ header {
   transition: max-height 0.3s ease-out, padding 0.3s ease-out;
   background: var(--warna-transparan);
   text-align: left;
-  white-space: pre-wrap; 
+  white-space: pre-wrap;
 }
 
 .item-catatan.aktif .item-isi {
-  max-height: 1000px; 
+  max-height: 1000px;
   padding: 15px;
   border-top: 1px dashed var(--warna-utama);
 }
-
-/* Area bawah pembungkus tombol manajemen hapus */
-.footer-daftar {
-  margin-top: 15px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px; /* Memberikan celah renggang yang ideal antar kedua tombol */
-}
-
 /* Tombol Pemicu Hapus (Keadaan Normal) */
 .btn-pemicu-hapus {
   background: transparent;
   color: var(--warna-utama);
   border: none;
   font-weight: bold;
-  font-size: 15px;
+  font-size: var(--ukuran-huruf);
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
@@ -374,7 +392,7 @@ header {
   border-radius: 5px;
   border: none;
   font-weight: bold;
-  font-size: 15px;
+  font-size: var(--ukuran-huruf);
   cursor: pointer;
   padding: 8px 15px;
   box-shadow: 0 4px 6px var(--warna-bayangan-soft);
@@ -420,7 +438,8 @@ header {
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.75);
-  z-index: 3000; /* Berada di atas seluruh elemen termasuk notif */
+  z-index: 3000;
+  /* Berada di atas seluruh elemen termasuk notif */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -529,4 +548,101 @@ header {
 
 #tombol-mengerti:active {
   background-color: var(--warna-muda);
+}
+
+/* tombol download */
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  position: relative;
+  overflow: hidden;
+
+  padding: 14px 24px;
+
+  border-radius: 18px;
+  border: 1px solid var(--warna-putih-transparan-soft);
+
+  background-color: var(--tombol-download);
+
+  color: var(--warna-kertas);
+
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  text-decoration: none;
+
+  box-shadow:
+  0 10px 24px var(--warna-bayangan-soft),
+  inset 0 1px 0 var(--warna-putih-transparan);
+
+  transition:
+  transform 0.2s ease,
+  box-shadow 0.25s ease,
+  filter 0.25s ease;
+
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* efek shine */
+.download-btn::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: -130%;
+
+  width: 90%;
+  height: 100%;
+
+  transform: skewX(-25deg);
+
+  background:
+  linear-gradient(
+  to right,
+  transparent,
+  var(--warna-putih-shine),
+  transparent
+  );
+
+  transition: left 0.7s ease;
+}
+
+.download-btn:hover::before {
+  left: 140%;
+}
+
+/* hover */
+.download-btn:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+  0 14px 32px var(--warna-bayangan),
+  inset 0 1px 0 var(--warna-putih-transparan-hover);
+
+  filter: brightness(1.03);
+}
+
+/* ditekan */
+.download-btn:active {
+  transform: scale(0.97);
+}
+
+/* icon */
+.download-btn .icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* mobile */
+@media (max-width: 480px) {
+  .download-btn {
+    width: 80%;
+    padding: 15px 20px;
+    font-size: 15px;
+  }
 }
