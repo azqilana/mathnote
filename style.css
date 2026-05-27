@@ -21,6 +21,7 @@
   --warna-putih-transparan-hover: rgba(255,255,255,0.2);
   --warna-putih-shine: rgba(255,255,255,0.22);
   --tombol-download: green;
+  --tinggi: 73vh;
   --ukuran-huruf: 12px;
 }
 
@@ -229,7 +230,7 @@ header {
 }
 
 .daftar-catatan {
-  height: 500px;
+  height: var(--tinggi);
   padding: 20px 15px;
   border-radius: 6px;
   text-align: center;
@@ -247,7 +248,7 @@ header {
 }
 .list-daftar {
   overflow-y: auto;
-  height: calc(73vh - 100px);
+  max-height: calc(var(--tinggi) - 100px);
   padding: 21px 10px;
   scrollbar-width: none;
 }
@@ -299,6 +300,12 @@ header {
 
 .daftar-catatan.mode-hapus .item-catatan {
   border: 3px solid var(--warna-muda) !important;
+}
+.daftar-catatan.mode-hapus .header-daftar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  transition: all 0.3s ease;
 }
 
 .item-judul {
@@ -383,7 +390,7 @@ header {
   background: transparent;
   color: var(--warna-utama);
   border: none;
-  font-weight: bold;
+  font-weight: 900;
   font-size: var(--ukuran-huruf);
   cursor: pointer;
   padding: 5px 10px;
