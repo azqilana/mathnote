@@ -38,7 +38,7 @@ jobs:
 
       - name: Init Capacitor
         run: |
-          npx cap init MathNote com.mathnote.app --web-dir . --yes
+          npx cap init MathNote com.mathnote.app --web-dir .
 
       - name: Add Android
         run: npx cap add android
