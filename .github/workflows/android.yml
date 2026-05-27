@@ -54,10 +54,6 @@ jobs:
         run: |
           npm install @capacitor/assets --save-dev
 
-      - name: Install Splash Screen Plugin
-        run: |
-          npm install @capacitor/splash-screen
-
       - name: Initialize Capacitor
         run: |
           npx cap init MathNote azq.math.note --web-dir www
@@ -70,9 +66,8 @@ jobs:
         run: |
           mkdir -p resources
           cp icon.png resources/icon.png
-          cp splash.png resources/splash.png
 
-      - name: Generate Android Icons and Splash Screen
+      - name: Generate Android Icons
         run: |
           npx capacitor-assets generate
 
@@ -80,19 +75,11 @@ jobs:
         run: |
           npx cap sync android
 
-      - name: Decode Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/mathnote.jks
-
-      - name: Build Release APK
+      - name: Build Debug APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file=$PWD/app/mathnote.jks \
-            -Pandroid.injected.signing.store.password=${{ secrets.STORE_PASSWORD }} \
-            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
-            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+          ./gradlew assembleDebug
 
       - name: Show APK Files
         run: |
@@ -102,4 +89,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: MathNote
-          path: android/app/build/outputs/apk/release/*.apk
+          path: android/app/build/outputs/apk/debug/*.apk
