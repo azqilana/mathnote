@@ -29,7 +29,7 @@ jobs:
         run: |
           echo '{
             "name": "mathnote",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "private": true
           }' > package.json
 
@@ -51,6 +51,10 @@ jobs:
           npm install @capacitor/cli
           npm install @capacitor/android
 
+      - name: Install Capacitor Assets
+        run: |
+          npm install @capacitor/assets --save-dev
+
       - name: Initialize Capacitor
         run: |
           npx cap init MathNote com.mathnote.app --web-dir www
@@ -58,6 +62,10 @@ jobs:
       - name: Add Android Platform
         run: |
           npx cap add android
+
+      - name: Generate App Icons
+        run: |
+          npx capacitor-assets generate --iconBackgroundColor '#ffffff'
 
       - name: Sync Android
         run: |
