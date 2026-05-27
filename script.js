@@ -436,3 +436,14 @@ function cekPlatform() {
 
 // Panggil saat halaman load
 window.addEventListener('load', cekPlatform);
+window.addEventListener('load', function () {
+  if (window.Capacitor && window.Capacitor.Plugins.SplashScreen) {
+    // Tampilkan splash
+    window.Capacitor.Plugins.SplashScreen.show();
+
+    // Sembunyikan setelah 3 detik
+    setTimeout(function () {
+      window.Capacitor.Plugins.SplashScreen.hide();
+    }, 3000);
+  }
+});
