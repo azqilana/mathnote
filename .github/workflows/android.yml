@@ -1,126 +1,136 @@
 name: Build Android APK
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
+workflow_dispatch:
+push:
+branches:
+- main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+build:
+runs-on: ubuntu-latest
+permissions:
+contents: write
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+steps:
+- name: Checkout Repository
+uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
+- name: Setup Node.js
+uses: actions/setup-node@v4
+with:
+node-version: 24
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 21
+- name: Setup Java
+uses: actions/setup-java@v4
+with:
+distribution: temurin
+java-version: 21
 
-      - name: Create package.json
-        run: |
-          echo '{
-            "name": "mathnote",
-            "version": "1.5.0",
-            "private": true
-          }' > package.json
+- name: Create package.json
+run: |
+echo ' {
+  "name": "mathnote",
+  "version": "1.5.0",
+  "private": true
+}' > package.json
 
-      - name: Prepare Web Files
-        run: |
-          mkdir -p www
-          cp index.html www/
-          cp style.css www/ || true
-          cp script.js www/ || true
-          cp *.png www/ || true
-          cp *.jpg www/ || true
-          cp *.jpeg www/ || true
-          cp *.webp www/ || true
+- name: Prepare Web Files
+run: |
+mkdir -p www
+cp index.html www/
+cp style.css www/ || true
+cp script.js www/ || true
+cp *.png www/ || true
+cp *.jpg www/ || true
+cp *.jpeg www/ || true
+cp *.webp www/ || true
 
-      - name: Install Capacitor
-        run: |
-          npm install @capacitor/core
-          npm install @capacitor/cli
-          npm install @capacitor/android
+- name: Install Capacitor
+run: |
+npm install @capacitor/core
+npm install @capacitor/cli
+npm install @capacitor/android
 
-      - name: Install Capacitor Assets
-        run: |
-          npm install @capacitor/assets --save-dev
+- name: Install Capacitor Assets
+run: |
+npm install @capacitor/assets --save-dev
 
-      - name: Install Splash Screen Plugin
-        run: |
-          npm install @capacitor/splash-screen
+- name: Install Splash Screen Plugin
+run: |
+npm install @capacitor/splash-screen
 
-      - name: Initialize Capacitor
-        run: |
-          npx cap init MathNote azq.math.note --web-dir www
+- name: Initialize Capacitor
+run: |
+npx cap init MathNote azq.math.note --web-dir www
 
-      - name: Add Android Platform
-        run: |
-          npx cap add android
+- name: Add Android Platform
+run: |
+npx cap add android
 
-      - name: Create Resources Folder
-        run: |
-          mkdir -p resources
-          cp icon.png resources/icon.png
-          cp splash.png resources/splash.png
+- name: Create Resources Folder
+run: |
+mkdir -p resources
+cp icon.png resources/icon.png
+cp splash.png resources/splash.png
 
-      - name: Generate Android Icons and Splash Screen
-        run: |
-          npx capacitor-assets generate
+- name: Generate Android Icons and Splash Screen
+run: |
+npx capacitor-assets generate
 
-      - name: Sync Android
-        run: |
-          npx cap sync android
+- name: Sync Android
+run: |
+npx cap sync android
 
-      - name: Decode Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/mathnote.jks
+- name: Decode Keystore
+run: |
+echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/mathnote.jks
 
-      - name: Build Release APK
-        run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file=$PWD/app/mathnote.jks \
-            -Pandroid.injected.signing.store.password=${{ secrets.STORE_PASSWORD }} \
-            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
-            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+- name: Build Release APK
+run: |
+cd android
+chmod +x gradlew
+./gradlew assembleRelease \
+-Pandroid.injected.signing.store.file=$PWD/app/mathnote.jks \
+-Pandroid.injected.signing.store.password=$ {{
+  secrets.STORE_PASSWORD
+}} \
+-Pandroid.injected.signing.key.alias=$ {{
+  secrets.KEY_ALIAS
+}} \
+-Pandroid.injected.signing.key.password=$ {{
+  secrets.KEY_PASSWORD
+}}
 
-      - name: Rename APK
-        run: |
-          cp android/app/build/outputs/apk/release/app-release.apk MathNote.apk
+- name: Rename APK
+run: |
+cp android/app/build/outputs/apk/release/app-release.apk MathNote.apk
 
-      - name: Get Version
-        id: version
-        run: |
-          echo "version=v$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+- name: Get Version
+id: version
+run: |
+echo "version=v$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.version.outputs.version }}
-          name: MathNote ${{ steps.version.outputs.version }}
-          body: |
-            ## MathNote - Aplikasi Catatan Dan Kalkulator Pintar
-            
-            ### Download
-            Klik file **MathNote.apk** di bawah untuk mengunduh.
-            
-            ### Cara Install
-            1. Download file MathNote.apk
-            2. Buka file APK di HP
-            3. Izinkan install dari sumber tidak dikenal jika diminta
-            4. Install selesai!
-          files: MathNote.apk
-          draft: false
-          prerelease: false
+- name: Create GitHub Release
+uses: softprops/action-gh-release@v2
+with:
+tag_name: $ {{
+  steps.version.outputs.version
+}}
+name: MathNote $ {{
+  steps.version.outputs.version
+}}
+body: |
+## MathNote - Aplikasi Catatan Dan Kalkulator Pintar
+
+### Download
+Klik file **MathNote.apk** di bawah untuk mengunduh.
+
+### Cara Install
+1. Download file MathNote.apk
+2. Buka file APK di HP
+3. Izinkan install dari sumber tidak dikenal jika diminta
+4. Install selesai!
+files: MathNote.apk
+draft: false
+prerelease: false

@@ -21,7 +21,6 @@
   --warna-putih-transparan-hover: rgba(255,255,255,0.2);
   --warna-putih-shine: rgba(255,255,255,0.22);
   --tombol-download: green;
-  --tinggi-daftar: 73vh;
   --ukuran-huruf: 12px;
 }
 
@@ -30,6 +29,7 @@
   margin: 0;
   padding: 0;
   text-align: center;
+  box-sizing: border-box;
 }
 
 body {
@@ -229,11 +229,13 @@ header {
 }
 
 .daftar-catatan {
-  height: var(--tinggi-daftar);
+  height: 500px;
   padding: 20px 15px;
   border-radius: 6px;
   text-align: center;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 .header-daftar {
   display: flex;
@@ -245,7 +247,8 @@ header {
 }
 .list-daftar {
   overflow-y: auto;
-  max-height: calc(var(--tinggi-daftar) - 100px);
+  height: calc(73vh - 100px);
+  padding: 21px 10px;
   scrollbar-width: none;
 }
 
@@ -259,8 +262,11 @@ header {
   color: var(--warna-utama);
   text-align: center !important;
 }
-
-/* 🔄 TOMBOL BATAL HAPUS (Sudah diperbaiki, diletakkan normal berdampingan) */
+#copyright {
+  margin-top: auto;
+  padding-top: 10px;
+}
+/*margi 🔄 TOMBOL BATAL HAPUS (Sudah diperbaiki, diletakkan normal berdampingan) */
 .btn-batal-hapus {
   display: none;
   /* Hanya muncul lewat mode-hapus */
@@ -292,7 +298,7 @@ header {
 }
 
 .daftar-catatan.mode-hapus .item-catatan {
-  border: 7px solid var(--warna-muda) !important;
+  border: 3px solid var(--warna-muda) !important;
 }
 
 .item-judul {
