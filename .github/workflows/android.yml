@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -30,6 +30,14 @@ jobs:
             "private": true
           }' > package.json
 
+      - name: Prepare www folder
+        run: |
+          mkdir www
+          cp index.html www/
+          cp style.css www/
+          cp script.js www/
+          cp iconmn.png www/ || true
+
       - name: Install Capacitor
         run: |
           npm install @capacitor/core
@@ -38,7 +46,7 @@ jobs:
 
       - name: Init Capacitor
         run: |
-          npx cap init MathNote com.mathnote.app --web-dir .
+          npx cap init MathNote com.mathnote.app --web-dir www
 
       - name: Add Android
         run: npx cap add android
