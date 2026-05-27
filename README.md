@@ -2,7 +2,7 @@
 
 ![Release](https://img.shields.io/github/v/release/azqilana/mathnote?style=flat-square&color=green)
 ![Platform](https://img.shields.io/badge/platform-Android-brightgreen?style=flat-square)
-![License](https://img.shields.io/badge/license-MIT-brown?style=flat-square)
+![License](https://img.shields.io/badge/license-GPL-blue?style=flat-square)
 
 **MathNote** adalah aplikasi catatan pintar yang dilengkapi fitur **Auto Math** — kamu bisa menulis catatan sekaligus menghitung angka di dalamnya, dan hasilnya bisa langsung dimasukkan ke catatan atau tidak, sesuai keinginanmu.
 
