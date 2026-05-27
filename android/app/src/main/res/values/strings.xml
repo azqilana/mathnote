@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">mathnote</string>
-    <string name="title_activity_main">mathnote</string>
-    <string name="package_name">com.azq.mathnote</string>
-    <string name="custom_url_scheme">com.azq.mathnote</string>
-</resources>
