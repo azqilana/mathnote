@@ -56,7 +56,7 @@ jobs:
 
       - name: Initialize Capacitor
         run: |
-          npx cap init MathNote com.mathnote.app --web-dir www
+          npx cap init MathNote azq.math.note --web-dir www
 
       - name: Add Android Platform
         run: |
