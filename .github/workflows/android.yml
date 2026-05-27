@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout Repository
@@ -54,6 +56,10 @@ jobs:
         run: |
           npm install @capacitor/assets --save-dev
 
+      - name: Install Splash Screen Plugin
+        run: |
+          npm install @capacitor/splash-screen
+
       - name: Initialize Capacitor
         run: |
           npx cap init MathNote azq.math.note --web-dir www
@@ -66,8 +72,9 @@ jobs:
         run: |
           mkdir -p resources
           cp icon.png resources/icon.png
+          cp splash.png resources/splash.png
 
-      - name: Generate Android Icons
+      - name: Generate Android Icons and Splash Screen
         run: |
           npx capacitor-assets generate
 
@@ -75,18 +82,45 @@ jobs:
         run: |
           npx cap sync android
 
-      - name: Build Debug APK
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/mathnote.jks
+
+      - name: Build Release APK
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=$PWD/app/mathnote.jks \
+            -Pandroid.injected.signing.store.password=${{ secrets.STORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
-      - name: Show APK Files
+      - name: Rename APK
         run: |
-          find android -name "*.apk"
+          cp android/app/build/outputs/apk/release/app-release.apk MathNote.apk
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - name: Get Version
+        id: version
+        run: |
+          echo "version=v$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: MathNote
-          path: android/app/build/outputs/apk/debug/*.apk
+          tag_name: ${{ steps.version.outputs.version }}
+          name: MathNote ${{ steps.version.outputs.version }}
+          body: |
+            ## MathNote - Aplikasi Catatan Dan Kalkulator Pintar
+            
+            ### Download
+            Klik file **MathNote.apk** di bawah untuk mengunduh.
+            
+            ### Cara Install
+            1. Download file MathNote.apk
+            2. Buka file APK di HP
+            3. Izinkan install dari sumber tidak dikenal jika diminta
+            4. Install selesai!
+          files: MathNote.apk
+          draft: false
+          prerelease: false
