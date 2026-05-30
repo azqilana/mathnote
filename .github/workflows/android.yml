@@ -55,14 +55,14 @@ jobs:
           echo '{
             "appId": "azq.math.note",
             "appName": "MathNote",
-            "webDir": ".",
+            "webDir": "./",
             "server": {
               "androidScheme": "https"
             }
           }' > capacitor.config.json
 
       - name: Initialize Capacitor
-        run: npx cap init MathNote azq.math.note --web-dir.
+        run: npx cap init MathNote azq.math.note --web-dir ./
 
       - name: Add Android Platform
         run: npx cap add android
