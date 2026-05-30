@@ -49,20 +49,33 @@ jobs:
 
       - name: Install Splash Screen Plugin
         run: npm install @capacitor/splash-screen
+      - name: Prepare Web Files
+        run: |
+          mkdir -p www
+          cp index.html www/
+          cp app.js www/
+          cp -r Layout www/
+          cp -r Logika www/
+          cp -r Page www/
+          cp -r Route www/
+          cp *.png www/ || true
+          cp *.jpg www/ || true
+          cp *.jpeg www/ || true
+          cp *.webp www/ || true
 
       - name: Create Capacitor Config
         run: |
           echo '{
             "appId": "azq.math.note",
             "appName": "MathNote",
-            "webDir": "./",
+            "webDir": "www",
             "server": {
               "androidScheme": "https"
             }
           }' > capacitor.config.json
 
       - name: Initialize Capacitor
-        run: npx cap init MathNote azq.math.note --web-dir ./
+        run: npx cap init MathNote azq.math.note --web-dir www
 
       - name: Add Android Platform
         run: npx cap add android
