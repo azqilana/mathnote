@@ -1,26 +1,54 @@
 /**
- * MathNote ARK - Logika/catatan.js
- * Offline First Strategy:
- * - Selalu simpan ke localStorage
- * - Kalau online & login → kirim ke API juga
- * - Kalau balik online → sync antrian ke database
- */
+* MathNote ARK - Logika/catatan.js
+* Offline First Strategy:
+* - Selalu simpan ke localStorage
+* - Kalau online & login → kirim ke API juga
+* - Kalau balik online → sync antrian ke database
+*/
 
-import { getCatatan, simpanCatatan, editCatatan, hapusCatatan } from './api.js'
+import {
+  getCatatan,
+  simpanCatatan,
+  editCatatan,
+  hapusCatatan
+} from './api.js'
+import {
+  konfirmasiHapus
+} from "./alert.js"
 
 // ─────────────────────────────
 // Mesin Hitung
 // ─────────────────────────────
 class Hitung {
   constructor() {
-    this.kamusOperator = [
-      { kata: /di\s*tambah/gi, simbol: '+' },
-      { kata: /di\s*kurang/gi, simbol: '-' },
-      { kata: /di\s*kali/gi, simbol: '×' },
-      { kata: /x/gi, simbol: '×' },
-      { kata: /\*/gi, simbol: '×' },
-      { kata: /di\s*bagi/gi, simbol: '÷' },
-      { kata: /\//gi, simbol: '÷' },
+    this.kamusOperator = [{
+      kata: /di\s*tambah/gi,
+      simbol: '+'
+    },
+      {
+        kata: /di\s*kurang/gi,
+        simbol: '-'
+      },
+      {
+        kata: /di\s*kali/gi,
+        simbol: '×'
+      },
+      {
+        kata: /x/gi,
+        simbol: '×'
+      },
+      {
+        kata: /\*/gi,
+        simbol: '×'
+      },
+      {
+        kata: /di\s*bagi/gi,
+        simbol: '÷'
+      },
+      {
+        kata: /\//gi,
+        simbol: '÷'
+      },
     ]
   }
 
@@ -32,8 +60,12 @@ class Hitung {
     const re = /\(([^()]+)\)/
     while (re.test(ekspresi)) {
       ekspresi = ekspresi.replace(re, (_, isi) => {
-        try { return new Function(`return ${isi.replace(/×/g,'*').replace(/÷/g,'/')}`)() }
-        catch { return 0 }
+        try {
+          return new Function(`return ${isi.replace(/×/g, '*').replace(/÷/g, '/')}`)()
+        }
+        catch {
+          return 0
+        }
       })
       ekspresi = this.bersihkanTanda(ekspresi)
     }
@@ -58,7 +90,7 @@ class Hitung {
         if (!isNaN(n)) angka.push(n)
       }
     } else {
-      const konten = baris.length > 1 ? baris[baris.length - 2] : terakhir.replace(reOp, '')
+      const konten = baris.length > 1 ? baris[baris.length - 2]: terakhir.replace(reOp, '')
       if (konten.includes(',')) {
         angka = konten.split(',').map(n => parseFloat(n.trim())).filter(n => !isNaN(n))
       }
@@ -71,29 +103,36 @@ class Hitung {
       if (op === '+=') return a + n
       if (op === '-=') return a - n
       if (op === '×=') return a * n
-      if (op === '÷=') return n !== 0 ? a / n : a
+      if (op === '÷=') return n !== 0 ? a / n: a
       return a
-    }, 0)
+    },
+      0)
 
     return Number(hasil.toFixed(2))
   }
 
-  prosesTeks(teks, pos) {
-    const hinggaKursor = teks.substring(0, pos)
+  prosesTeks(teks,
+    pos) {
+    const hinggaKursor = teks.substring(0,
+      pos)
     const berurutan = this.prosesAngkaBerurutan(hinggaKursor)
     if (berurutan !== null) return berurutan
 
     const baris = hinggaKursor.split('\n')
     let terakhir = baris[baris.length - 1].trim()
-    this.kamusOperator.forEach(item => { terakhir = terakhir.replace(item.kata, item.simbol) })
+    this.kamusOperator.forEach(item => {
+      terakhir = terakhir.replace(item.kata, item.simbol)
+    })
 
     let ekspresi = terakhir.replace(/[^0-9+\-×÷.()]/g, '')
     if (/[\d()]+[\+\-\×\÷][\d()]+/.test(ekspresi)) {
       try {
         ekspresi = this.prosesKurung(ekspresi)
-        const hasil = new Function(`return ${ekspresi.replace(/×/g,'*').replace(/÷/g,'/')}`)()
+        const hasil = new Function(`return ${ekspresi.replace(/×/g, '*').replace(/÷/g, '/')}`)()
         if (typeof hasil === 'number' && !isNaN(hasil) && isFinite(hasil)) return Number(hasil.toFixed(2))
-      } catch { return null }
+      } catch {
+        return null
+      }
     }
     return null
   }
@@ -215,7 +254,7 @@ export async function init() {
 function cekPlatform() {
   const btn = document.getElementById('downloadBtn')
   if (!btn) return
-  btn.style.display = window.Capacitor !== undefined ? 'none' : 'block'
+  btn.style.display = window.Capacitor !== undefined ? 'none': 'block'
 }
 
 // ─────────────────────────────
@@ -281,14 +320,14 @@ function tampilkanDaftar() {
     const div = document.createElement('div')
     div.className = 'item-catatan'
     div.innerHTML = `
-      <div class="item-judul" data-index="${index}">
-        <span class="teks-judul">${judul}</span>
-        <div class="grup-tombol-aksi">
-          <button class="btn-edit-satuan" data-index="${index}">✏️</button>
-          <button class="btn-hapus-satuan" data-index="${index}">❌</button>
-        </div>
-      </div>
-      <div class="item-isi">${item.isi}</div>
+    <div class="item-judul" data-index="${index}">
+    <span class="teks-judul">${judul}</span>
+    <div class="grup-tombol-aksi">
+    <button class="btn-edit-satuan" data-index="${index}">✏️</button>
+    <button class="btn-hapus-satuan" data-index="${index}">❌</button>
+    </div>
+    </div>
+    <div class="item-isi">${item.isi}</div>
     `
     wadah.appendChild(div)
   })
@@ -301,17 +340,19 @@ function tampilkanDaftar() {
   })
 
   wadah.querySelectorAll('.btn-edit-satuan').forEach(el => {
-    el.addEventListener('click', function (e) {
-      e.stopPropagation()
-      bukaEdit(parseInt(this.dataset.index))
-    })
+    el.addEventListener('click',
+      function (e) {
+        e.stopPropagation()
+        bukaEdit(parseInt(this.dataset.index))
+      })
   })
 
   wadah.querySelectorAll('.btn-hapus-satuan').forEach(el => {
-    el.addEventListener('click', function (e) {
-      e.stopPropagation()
-      hapusSatu(parseInt(this.dataset.index))
-    })
+    el.addEventListener('click',
+      function (e) {
+        e.stopPropagation()
+        hapusSatu(parseInt(this.dataset.index))
+      })
   })
 }
 
@@ -346,7 +387,9 @@ async function hapusSatu(index) {
       await hapusCatatan(item.id)
     } else if (item.id) {
       // Offline → masuk antrian
-      tambahAntrian({ aksi: 'hapus', localId: Date.now(), dbId: item.id })
+      tambahAntrian( {
+        aksi: 'hapus', localId: Date.now(), dbId: item.id
+      })
     }
   }
 }
@@ -355,14 +398,16 @@ function keluarModeHapus() {
   isModeHapus = false
   document.getElementById('daftar-catatan')?.classList.remove('mode-hapus')
   const btn = document.getElementById('btn-master-hapus')
-  if (btn) { btn.classList.remove('aktif-merah'); btn.innerText = 'Pilih' }
+  if (btn) {
+    btn.classList.remove('aktif-merah'); btn.innerText = 'Pilih'
+  }
 }
 
 function sisipkanHasil(format) {
   if (nilaiHasil === null) return
   const el = document.getElementById('isi-catatan')
   const pos = el.selectionStart
-  const sisipan = format === 'A' ? ` = ${nilaiHasil}` : ` (${nilaiHasil})`
+  const sisipan = format === 'A' ? ` = ${nilaiHasil}`: ` (${nilaiHasil})`
   el.value = el.value.substring(0, pos) + sisipan + el.value.substring(pos)
   document.getElementById('tooltip-kalkulator').style.display = 'none'
   nilaiHasil = null
@@ -397,133 +442,160 @@ function pasangEvent() {
     }
   })
 
-  document.getElementById('btn-opsi-a').addEventListener('click', () => sisipkanHasil('A'))
-  document.getElementById('btn-opsi-c').addEventListener('click', () => sisipkanHasil('C'))
+  document.getElementById('btn-opsi-a').addEventListener('click',
+    () => sisipkanHasil('A'))
+  document.getElementById('btn-opsi-c').addEventListener('click',
+    () => sisipkanHasil('C'))
 
   // Tombol tambah
-  btnTambah.addEventListener('click', function (e) {
-    e.preventDefault()
-    const catatan = document.getElementById('catatan')
-    const daftar = document.getElementById('daftar-catatan')
-    if (catatan.style.display === 'none' || !catatan.style.display) {
+  btnTambah.addEventListener('click',
+    function (e) {
+      e.preventDefault()
+      const catatan = document.getElementById('catatan')
+      const daftar = document.getElementById('daftar-catatan')
+      if (catatan.style.display === 'none' || !catatan.style.display) {
+        indeksEdit = null
+        document.getElementById('judul').value = ''
+        isiEl.value = ''
+        catatan.style.display = 'block'
+        daftar.style.display = 'none'
+        setTimeout(() => document.getElementById('judul').focus(), 300)
+      } else {
+        daftar.style.display = 'flex'
+        catatan.style.display = 'none'
+        tooltip.style.display = 'none'
+      }
+    })
+
+  // Tombol tutup
+  btnTutup.addEventListener('click',
+    function () {
       indeksEdit = null
       document.getElementById('judul').value = ''
       isiEl.value = ''
-      catatan.style.display = 'block'
-      daftar.style.display = 'none'
-      setTimeout(() => document.getElementById('judul').focus(), 300)
-    } else {
-      daftar.style.display = 'flex'
-      catatan.style.display = 'none'
+      document.getElementById('daftar-catatan').style.display = 'flex'
+      document.getElementById('catatan').style.display = 'none'
       tooltip.style.display = 'none'
-    }
-  })
-
-  // Tombol tutup
-  btnTutup.addEventListener('click', function () {
-    indeksEdit = null
-    document.getElementById('judul').value = ''
-    isiEl.value = ''
-    document.getElementById('daftar-catatan').style.display = 'flex'
-    document.getElementById('catatan').style.display = 'none'
-    tooltip.style.display = 'none'
-  })
+    })
 
   // Submit form
-  form.addEventListener('submit', async function (e) {
-    e.preventDefault()
-    const judul = document.getElementById('judul').value
-    const isi = isiEl.value.trim()
-    if (!isi) { isiEl.focus(); return }
-
-    const localId = Date.now()
-
-    if (indeksEdit !== null) {
-      // Edit
-      const item = daftarData[indeksEdit]
-      const itemBaru = { ...item, judul, isi }
-
-      // Update lokal
-      daftarData[indeksEdit] = itemBaru
-      setLokal(daftarData)
-
-      if (isLogin()) {
-        if (isOnline() && item.id) {
-          await editCatatan(item.id, judul, isi)
-        } else if (item.id) {
-          tambahAntrian({ aksi: 'edit', localId, dbId: item.id, judul, isi })
-        }
+  form.addEventListener('submit',
+    async function (e) {
+      e.preventDefault()
+      const judul = document.getElementById('judul').value
+      const isi = isiEl.value.trim()
+      if (!isi) {
+        isiEl.focus(); return
       }
-      indeksEdit = null
-    } else {
-      // Simpan baru
-      const itemBaru = { localId, judul, isi }
-      daftarData.unshift(itemBaru)
-      setLokal(daftarData)
 
-      if (isLogin()) {
-        if (isOnline()) {
-          await simpanCatatan(judul, isi)
-          // Refresh dari database untuk dapat ID yang benar
-          const data = await getCatatan()
-          if (!data.error) { daftarData = data; setLokal(data) }
-        } else {
-          tambahAntrian({ aksi: 'simpan', localId, judul, isi })
+      const localId = Date.now()
+
+      if (indeksEdit !== null) {
+        // Edit
+        const item = daftarData[indeksEdit]
+        const itemBaru = {
+          ...item,
+          judul,
+          isi
         }
-      }
-    }
 
-    document.getElementById('judul').value = ''
-    isiEl.value = ''
-    tooltip.style.display = 'none'
-    document.getElementById('daftar-catatan').style.display = 'flex'
-    document.getElementById('catatan').style.display = 'none'
+        // Update lokal
+        daftarData[indeksEdit] = itemBaru
+        setLokal(daftarData)
 
-    tampilkanDaftar()
-
-    notif.classList.add('muncul')
-    setTimeout(() => notif.classList.remove('muncul'), 600)
-  })
-
-  // Mode hapus
-  btnMasterHapus.addEventListener('click', async function () {
-    if (!daftarData.length) return
-    if (!isModeHapus) {
-      isModeHapus = true
-      document.getElementById('daftar-catatan').classList.add('mode-hapus')
-      btnMasterHapus.classList.add('aktif-merah')
-      btnMasterHapus.innerText = 'Hapus Semua'
-      document.querySelectorAll('.item-catatan').forEach(el => el.classList.remove('aktif'))
-    } else {
-      const okSemua = await konfirmasiHapus({ judul: 'Hapus Semua?', pesan: 'Semua catatan akan dihapus permanen!', labelHapus: 'Hapus Semua' })
-      if (okSemua) {
-        if (isLogin() && isOnline()) {
-          for (const item of daftarData) {
-            if (item.id) await hapusCatatan(item.id)
+        if (isLogin()) {
+          if (isOnline() && item.id) {
+            await editCatatan(item.id, judul, isi)
+          } else if (item.id) {
+            tambahAntrian( {
+              aksi: 'edit', localId, dbId: item.id, judul, isi
+            })
           }
         }
-        daftarData = []
-        setLokal([])
-        setAntrian([])
-        tampilkanDaftar()
-        keluarModeHapus()
+        indeksEdit = null
       } else {
-        keluarModeHapus()
-      }
-    }
-  })
+        // Simpan baru
+        const itemBaru = {
+          localId,
+          judul,
+          isi
+        }
+        daftarData.unshift(itemBaru)
+        setLokal(daftarData)
 
-  btnBatal.addEventListener('click', keluarModeHapus)
+        if (isLogin()) {
+          if (isOnline()) {
+            await simpanCatatan(judul, isi)
+            // Refresh dari database untuk dapat ID yang benar
+            const data = await getCatatan()
+            if (!data.error) {
+              daftarData = data; setLokal(data)
+            }
+          } else {
+            tambahAntrian( {
+              aksi: 'simpan', localId, judul, isi
+            })
+          }
+        }
+      }
+
+      document.getElementById('judul').value = ''
+      isiEl.value = ''
+      tooltip.style.display = 'none'
+      document.getElementById('daftar-catatan').style.display = 'flex'
+      document.getElementById('catatan').style.display = 'none'
+
+      tampilkanDaftar()
+
+      notif.classList.add('muncul')
+      setTimeout(() => notif.classList.remove('muncul'), 600)
+    })
+
+  // Mode hapus
+  btnMasterHapus.addEventListener('click',
+    async function () {
+      if (!daftarData.length) return
+      if (!isModeHapus) {
+        isModeHapus = true
+        document.getElementById('daftar-catatan').classList.add('mode-hapus')
+        btnMasterHapus.classList.add('aktif-merah')
+        btnMasterHapus.innerText = 'Hapus Semua'
+        document.querySelectorAll('.item-catatan').forEach(el => el.classList.remove('aktif'))
+      } else {
+        const okSemua = await konfirmasiHapus( {
+          judul: 'Hapus Semua?', pesan: 'Semua catatan akan dihapus permanen!', labelHapus: 'Hapus Semua'
+        })
+        if (okSemua) {
+          if (isLogin() && isOnline()) {
+            for (const item of daftarData) {
+              if (item.id) await hapusCatatan(item.id)
+            }
+          }
+          daftarData = []
+          setLokal([])
+          setAntrian([])
+          tampilkanDaftar()
+          keluarModeHapus()
+        } else {
+          keluarModeHapus()
+        }
+      }
+    })
+
+  btnBatal.addEventListener('click',
+    keluarModeHapus)
 
   // Panduan
-  document.getElementById('tombol-mengerti')?.addEventListener('click', function () {
-    localStorage.setItem('mn_baca_panduan', 'true')
-    document.getElementById('halaman-panduan').classList.add('hidden')
-  })
+  document.getElementById('tombol-mengerti')?.addEventListener('click',
+    function () {
+      localStorage.setItem('mn_baca_panduan', 'true')
+      document.getElementById('halaman-panduan').classList.add('hidden')
+    })
 
-  document.getElementById('btn-panduan')?.addEventListener('click', function () {
-    document.getElementById('halaman-panduan').classList.remove('hidden')
-  })
+  document.getElementById('btn-panduan')?.addEventListener('click',
+    function () {
+      document.getElementById('halaman-panduan').classList.remove('hidden')
+    })
 
   if (!localStorage.getItem('mn_baca_panduan')) {
     document.getElementById('halaman-panduan')?.classList.remove('hidden')
