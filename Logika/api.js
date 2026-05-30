@@ -4,7 +4,7 @@
  * Tidak ada HTML disini, hanya fetch
  */
 
-const BASE_URL = 'https://mathnote.muhammad-azqilana.workers.dev'
+const BASE_URL = 'https://api.mazqilana.my.id'
 
 function getToken() {
   return localStorage.getItem('mn_token')
