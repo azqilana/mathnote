@@ -1,0 +1,29 @@
+[
+  {
+    "route": "/login",
+    "layout": ["{main}"],
+    "condition": "isGuest",
+    "middleware": null,
+    "html": "Page/login/template.js",
+    "css": ["Page/login/style.css"],
+    "js": ["Logika/auth.js"]
+  },
+  {
+    "route": "/register",
+    "layout": ["{main}"],
+    "condition": "isGuest",
+    "middleware": null,
+    "html": "Page/register/template.js",
+    "css": ["Page/register/style.css"],
+    "js": ["Logika/auth.js"]
+  },
+  {
+    "route": "/catatan",
+    "layout": ["navbar.js", "{main}", "footer.js"],
+    "condition": null,
+    "middleware": ["showLoading"],
+    "html": "Page/catatan/template.js",
+    "css": ["Page/catatan/style.css"],
+    "js": ["Logika/catatan.js"]
+  }
+]

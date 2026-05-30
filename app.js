@@ -1,9 +1,9 @@
 /**
- * MathNote - ARK Framework
- * app.js - Entry point
+ * MathNote ARK - app.js
+ * Entry point - import sekali saja
  */
 
-import { initRouter, navigate } from './router.js'
+import { initRouter, navigate } from './Route/router.js'
 
 window.ark = { navigate }
 
