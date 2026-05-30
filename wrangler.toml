@@ -1,0 +1,9 @@
+name = "mathnote"
+main = "worker.js"
+compatibility_date = "2026-05-29"
+compatibility_flags = ["nodejs_compat"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mathnote"
+database_id = "47a41ef3-e8e5-4ad4-8468-1379112eb049"
