@@ -330,7 +330,8 @@ function bukaEdit(index) {
 }
 
 async function hapusSatu(index) {
-  if (!confirm('Hapus catatan ini?')) return
+  const ok = await konfirmasiHapus()
+  if (!ok) return
 
   const item = daftarData[index]
 
@@ -494,7 +495,8 @@ function pasangEvent() {
       btnMasterHapus.innerText = 'Hapus Semua'
       document.querySelectorAll('.item-catatan').forEach(el => el.classList.remove('aktif'))
     } else {
-      if (confirm('PERINGATAN! Hapus SEMUA catatan?')) {
+      const okSemua = await konfirmasiHapus({ judul: 'Hapus Semua?', pesan: 'Semua catatan akan dihapus permanen!', labelHapus: 'Hapus Semua' })
+      if (okSemua) {
         if (isLogin() && isOnline()) {
           for (const item of daftarData) {
             if (item.id) await hapusCatatan(item.id)
