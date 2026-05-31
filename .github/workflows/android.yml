@@ -131,6 +131,6 @@ jobs:
             2. Buka file APK di HP
             3. Izinkan install dari sumber tidak dikenal jika diminta
             4. Install selesai!
-          files: MathNote-v*.apk
+          files: MathNote-v${VERSION}.apk
           draft: false
           prerelease: false
