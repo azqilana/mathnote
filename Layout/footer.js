@@ -5,7 +5,7 @@
 export default function () {
   return `
     <footer>
-      <a href="https://github.com/azqilana/mathnote/releases/latest"
+      <a href="https://github.com/azqilana/mathnote/releases"
         id="downloadBtn" class="download-btn">
         <span class="icon">⬇</span> Download
       </a>
