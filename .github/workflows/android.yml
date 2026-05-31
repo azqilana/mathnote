@@ -106,7 +106,7 @@ jobs:
             -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
       - name: Rename APK
-        run: cp android/app/build/outputs/apk/release/app-release.apk MathNote${VERSION}.apk
+        run: cp android/app/build/outputs/apk/release/app-release.apk MathNote-v${VERSION}.apk
 
       - name: Get Version
         id: version
@@ -131,6 +131,6 @@ jobs:
             2. Buka file APK di HP
             3. Izinkan install dari sumber tidak dikenal jika diminta
             4. Install selesai!
-          files: MathNote.apk
+          files: MathNote-v*.apk
           draft: false
           prerelease: false
