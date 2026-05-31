@@ -134,5 +134,5 @@ jobs:
             3. Izinkan install dari sumber tidak dikenal jika diminta
             4. Install selesai!
           files: MathNote-v*.apk
-          draft: false
-          prerelease: false
+          draft: true
+          prerelease: true
