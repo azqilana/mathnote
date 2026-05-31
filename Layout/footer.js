@@ -5,7 +5,7 @@
 export default function () {
   return `
     <footer>
-      <a href="https://github.com/azqilana/mathnote/releases/latest/download/MathNote.apk"
+      <a href="https://github.com/azqilana/mathnote/releases/latest"
         id="downloadBtn" class="download-btn">
         <span class="icon">⬇</span> Download
       </a>
