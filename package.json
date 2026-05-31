@@ -1,0 +1,8 @@
+{
+  "name": "my-cloudflare-worker",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.3.4"
+  }
+}
