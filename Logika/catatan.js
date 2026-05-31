@@ -465,6 +465,7 @@ function pasangEvent() {
         catatan.style.display = 'none'
         tooltip.style.display = 'none'
       }
+
     })
 
   // Tombol tutup
@@ -487,7 +488,9 @@ function pasangEvent() {
       if (!isi) {
         isiEl.focus(); return
       }
-
+      const btnSimpan = document.querySelector('.btn-simpan')
+      btnSimpan.disabled = true
+      btnSimpan.textContent = 'Proses'
       const localId = Date.now()
 
       if (indeksEdit !== null) {
@@ -549,6 +552,9 @@ function pasangEvent() {
 
       notif.classList.add('muncul')
       setTimeout(() => notif.classList.remove('muncul'), 600)
+      btnSimpan.disabled = false
+      btnSimpan.textContent = 'Simpan'
+
     })
 
   // Mode hapus
