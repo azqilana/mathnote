@@ -49,19 +49,6 @@ jobs:
 
       - name: Install Splash Screen Plugin
         run: npm install @capacitor/splash-screen
-      - name: Prepare Web Files
-        run: |
-          mkdir -p www
-          cp index.html www/
-          cp app.js www/
-          cp -r Layout www/
-          cp -r Logika www/
-          cp -r Page www/
-          cp -r Route www/
-          cp *.png www/ || true
-          cp *.jpg www/ || true
-          cp *.jpeg www/ || true
-          cp *.webp www/ || true
 
       - name: Create Capacitor Config
         run: |
@@ -106,7 +93,9 @@ jobs:
             -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
 
       - name: Rename APK
-        run: cp android/app/build/outputs/apk/release/app-release.apk MathNote-v${VERSION}.apk
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          cp android/app/build/outputs/apk/release/app-release.apk MathNote-v${VERSION}.apk
 
       - name: Get Version
         id: version
@@ -124,13 +113,13 @@ jobs:
             ## MathNote - Aplikasi Catatan Dan Kalkulator Pintar
 
             ### Download
-            Klik file **MathNote.apk** di bawah untuk mengunduh.
+            Klik file **MathNote-v*.apk** di bawah untuk mengunduh.
 
             ### Cara Install
-            1. Download file MathNote.apk
+            1. Download file MathNote-v*.apk
             2. Buka file APK di HP
             3. Izinkan install dari sumber tidak dikenal jika diminta
             4. Install selesai!
-          files: MathNote-v${VERSION}.apk
+          files: MathNote-v*.apk
           draft: false
           prerelease: false
